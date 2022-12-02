@@ -175,14 +175,6 @@ const useLayers = (initialLayer, initialCanvas) => {
   // Toggles show or hide layer based on whether the layer is shown or hidden
   const toggleLayer = async (layer, client) => {};
 
-  // Get layer
-  // Gets a layer by name. Returns the layer if found,
-  // Returns undefined if not found.
-  const getLayer = (layer) => {
-    const foundLayer = layers.find((l) => l.name === layer.name);
-    return foundLayer;
-  };
-
   // Set layer
   // Sets a layer given a layer reference. Returns void.
   const setLayer = (layer) => {
@@ -212,12 +204,6 @@ const useLayers = (initialLayer, initialCanvas) => {
         console.error(error);
       }
     }
-  };
-
-  // Sort layers
-  // Sorts list based on index and return it
-  const sortByIndex = (list) => {
-    return list.sort((a, b) => (a.index > b.index ? 1 : -1));
   };
 
   return {
