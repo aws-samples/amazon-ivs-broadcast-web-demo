@@ -1,0 +1,69 @@
+.broadcastWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  place-items: center;
+}
+
+.streamPreview {
+  display: flex;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.statusBar {
+  width: 100%;
+  height: 6rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.controlBar {
+  width: 100%;
+  min-height: 8rem;
+  height: auto;
+  padding: 0 2rem;
+  display: flex;
+  place-items: var(--justify-center-responsive);
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 1.2rem;
+}
+
+.controlBarLeft,
+.controlBarRight {
+  display: flex;
+  flex-shrink: 0;
+  place-items: center;
+  width: 10%;
+  min-width: 4.2rem;
+}
+
+.controlBarLeft {
+  display: var(--hide-on-mobile);
+  justify-content: flex-start;
+}
+
+.controlBarRight {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.controlBarCenter {
+  flex-grow: 1;
+}
+
+/* Mobile */
+@media only screen and (max-width: 520px)  {
+  .controlBarRight {
+    display: none;
+  }
+  .controlBar {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+}

@@ -1,0 +1,56 @@
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon > svg {
+  width: 100%;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.iconColorCurrent {
+  fill: currentColor;
+}
+
+.iconColorBase {
+  fill: var(--color-text-base);
+}
+
+.iconColorInverted {
+  fill: var(--color-text-inverted);
+}
+
+.iconColorSuccess {
+  fill: var(--color--positive);
+}
+
+.iconColorError {
+  fill: var(--color--destructive);
+}
+
+.iconSizeSm {
+  width: 14px;
+  height: 14px;
+}
+
+.iconSizeBase {
+  width: 24px;
+  height: 24px;
+}
+
+.iconSizeMd {
+  width: 36px;
+  height: 36px;
+}
+
+.iconSizeLg {
+  width: 48px;
+  height: 48px;
+}
+
+.iconSizeLg {
+  width: 96px;
+  height: 96px;
+}

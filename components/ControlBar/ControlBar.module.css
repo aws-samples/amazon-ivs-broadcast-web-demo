@@ -1,0 +1,21 @@
+.controlBar {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.hide {
+  display: none;
+}
+
+.responsiveShow {
+  display: none;
+}
+
+@media only screen and (max-width: 520px)  {
+  .responsiveShow {
+    display: flex;
+  }
+}

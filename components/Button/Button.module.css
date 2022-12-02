@@ -1,0 +1,135 @@
+.button {
+  --font-size: 1.6rem
+}
+
+.button {
+  border: 0.2rem solid transparent;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  height: var(--input-height);
+  font-weight: 500;
+  font-size: var(--font-size);
+  background: var(--color-bg-button);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-base);
+}
+
+.button > span {
+  display: inline-flex;
+}
+
+.button:hover {
+  background: var(--color-bg-button-hover);
+}
+
+.button:focus,
+.button:active {
+  border: 0.2rem solid var(--color--primary);
+}
+
+.button[disabled] {
+  background: var(--color--disabled);
+  color: var(--color-text-hint);
+  cursor: default;
+}
+
+.buttonFullWidth {
+  width: 100%;
+}
+
+.responsiveFullWidth {
+  width: auto;
+}
+
+.buttonRadius {
+  border-radius: var(--radius);
+}
+
+.buttonRadiusLg {
+  border-radius: var(--radius);
+}
+
+.buttonRounded {
+  border-radius: var(--input-height);
+  padding: 0.7rem;
+}
+
+.buttonRoundedText {
+  border-radius: var(--input-height);
+  padding: 0.7rem 1.1rem;
+}
+
+.buttonPrimary {
+  background: var(--color-bg-button-primary-default);
+  color: var(--color-text-inverted);
+}
+
+.buttonPrimary:hover,
+.buttonPrimary:focus {
+  background: var(--color-bg-button-primary-hover);
+}
+
+.buttonSecondary {
+  background: var(--color-bg-button-secondary);
+  color: var(--color-text-base);
+}
+
+.buttonSecondary:hover {
+  background: var(--color-bg-button-hover);
+}
+
+.buttonDestruct {
+  background: var(--color--destructive);
+  color: var(--color-white);
+}
+
+.buttonDestruct:hover {
+  background: var(--color--destructive);
+  color: var(--color-white);
+}
+
+.buttonConfirm {
+  background: var(--color--positive);
+  color: var(--color-white);
+}
+
+.buttonConfirm:hover {
+  background: var(--color--positive);
+  color: var(--color-white);
+}
+
+.buttonBordered {
+  background: var(--color-bg-button-overlay);
+  border: 2px solid var(--color-text-inverted);
+  color: var(--color-text-inverted);
+}
+
+.buttonBordered:hover {
+  background: var(--color-bg-button-overlay-hover);
+}
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.spinner {
+  position: absolute;
+}
+
+/* Mobile */
+@media only screen and (max-width: 520px)  {
+  .responsiveFullWidth {
+    width: 100%;
+  }
+  .button {
+    --font-size: 1.4rem
+  }
+}

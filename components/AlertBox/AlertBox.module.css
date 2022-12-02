@@ -1,0 +1,42 @@
+.alertWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  height: auto;
+  max-height: calc(100vh - 2rem - 1.6rem);
+  align-items: flex-start;
+  justify-content: center;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 1.6rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  background-color: var(--color-bg-body);
+  box-shadow: 0px 71px 28px rgba(22, 24, 29, 0.03), 0px 40px 24px rgba(22, 24, 29, 0.09), 0px 18px 18px rgba(22, 24, 29, 0.15), 0px 4px 10px rgba(22, 24, 29, 0.17), 0px 0px 0px rgba(22, 24, 29, 0.18);
+  gap: 0.8rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.error {
+  border: 2px solid var(--color--destructive);
+}
+
+.alert {
+  /* Modal index is 10 - this should be higher than modal */
+  z-index: 12;
+  flex-grow: 1;
+  font-size: 1.4rem;
+  overflow-y: auto
+}
+
+.button {
+  flex-grow: 0;
+  flex-shrink: 0;
+}

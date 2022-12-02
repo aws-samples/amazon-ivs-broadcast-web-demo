@@ -1,0 +1,74 @@
+.settingsTitle {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.settingsWrapper {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  row-gap: 1.2rem;
+  height: 100%;
+}
+
+.settingsContent {
+  padding: 2rem 2rem 0 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.settingsContentBody {
+  margin-bottom: 4rem;
+}
+
+.settingsForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.settingsFooter {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.deviceSelectField {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.deviceSelectLabel {
+  display: block;
+}
+
+.previewWrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.previewInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.previewVideo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  object-fit: contain;
+  width: 100%;
+  height: 100%; 
+  background-color: black;
+}

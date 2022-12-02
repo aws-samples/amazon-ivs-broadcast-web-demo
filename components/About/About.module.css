@@ -1,0 +1,57 @@
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.6rem;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  gap: 1.6rem;
+}
+
+.content {
+  padding: 2rem 2rem 0 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.body {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.bodyText {
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.policy {
+  font-size: 1.2rem;
+  color: var(--color-text-hint);
+}
+
+.terms {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  color: var(--color-text-hint);
+}

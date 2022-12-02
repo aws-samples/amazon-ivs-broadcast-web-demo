@@ -1,0 +1,29 @@
+.pill {
+  padding: 0.4rem 1.2rem;
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  letter-spacing: 0.02rem;
+  color: var(--color-text-base);
+}
+
+.pillBase {
+  background: var(--color-bg-button);
+}
+
+.pillPrimary {
+  background: var(--color--primary);
+}
+
+.pillSecondary {
+  background: var(--color--secondary);
+}
+
+.pillPositive {
+  background: var(--color--positive);
+}
+
+.pillDestructive {
+  background: var(--color--destructive);
+  color: var(--color-white);
+}
