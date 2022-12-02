@@ -1,0 +1,72 @@
+.button {
+  border: 0.2rem solid transparent;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border-radius: var(--radius-small);
+  height: var(--input-height);
+  font-weight: 500;
+  background: var(--color-bg-button);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-small);
+  overflow: hidden;
+  color: var(--color-white);
+}
+
+.button:visited {
+  color: var(--color-white);
+}
+
+.button:focus,
+.button:active {
+  border: 0.2rem solid var(--color--primary);
+}
+
+.button[disabled] {
+  background: var(--color--disabled);
+  color: var(--color-text-hint);
+  cursor: default;
+}
+
+.buttonRadius {
+  border-radius: var(--radius);
+}
+
+.buttonRadiusLg {
+  border-radius: var(--radius);
+}
+
+.buttonRounded {
+  border-radius: var(--input-height);
+}
+
+.buttonPrimary, .buttonPrimary:visited {
+  background: var(--color-bg-button-primary-default);
+  color: var(--color-white);
+}
+
+.buttonPrimary:hover,
+.buttonPrimary:focus {
+  background: var(--color-bg-button-primary-hover);
+}
+
+.buttonSecondary, .buttonSecondary:visited {
+  background: var(--color-bg-button-secondary-default);
+  color: var(--color-text-base);
+}
+
+.buttonDestruct, .buttonDestruct:visited {
+  background: var(--color--destructive);
+  color: var(--color-white);
+}
+
+.buttonConfirm, .buttonConfirm:visited {
+  background: var(--color--positive);
+}
+
+.buttonBordered {
+  border: 2px solid var(--color-border-base);
+}

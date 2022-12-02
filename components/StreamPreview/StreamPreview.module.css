@@ -1,0 +1,39 @@
+.streamPreviewContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-items: center;
+  border-radius: var(--radius);
+  background-color: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.streamPreview {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.streamPreviewVideo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  object-fit: contain;
+  width: 100%;
+  height: 100%; 
+}
+
+.needPermissions {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-alt);
+}

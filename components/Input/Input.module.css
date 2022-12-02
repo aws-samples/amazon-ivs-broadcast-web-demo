@@ -1,0 +1,36 @@
+.input {
+  border: 2px solid transparent;
+  outline: none;
+  appearance: none;
+  resize: none;
+  -webkit-appearance: none;
+  padding: 0.8rem 1.2rem;
+  color: var(--color-text-base);
+  background: var(--color-bg-input);
+  border-radius: var(--radius-small);
+  width: 100%;
+}
+
+.input:focus {
+  border: 2px solid var(--color--primary);
+}
+
+.errorInput {
+  border: 2px solid var(--color--destructive);
+}
+
+.errorHint {
+  font-size: 1.2rem;
+  line-height: 1.2;
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: var(--color-text-destructive)
+}
+
+.hint {
+  font-size: 1.2rem;
+  line-height: 1.2;
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: var(--color-text-hint)
+}

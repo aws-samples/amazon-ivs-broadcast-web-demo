@@ -1,0 +1,38 @@
+.wrapper {
+  position: relative;
+  display: flex;
+}
+
+.tooltip {
+  position: absolute;
+  font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.4rem;
+  background-color: var(--color-bg-inverted);
+  color: var(--color-text-inverted);
+  text-align: center;
+  border-radius: var(--radius-small);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.top {
+  bottom: 100%;
+}
+
+.bottom {
+  top: 100%;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.center {
+  left: 50%;
+  transform: translateX(-50%);
+}

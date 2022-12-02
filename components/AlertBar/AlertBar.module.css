@@ -1,0 +1,28 @@
+.wrapper {
+  width: 100%;
+  padding: 0.8rem 2rem 0 2rem;
+}
+
+.layout {
+  background: var(--color--primary);
+  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: 3.6rem 1fr 3.6rem;
+  padding: 1.6rem;
+  gap: 0.8rem;
+  place-items: center;
+}
+
+.fixedContent {
+  width: 3.6rem;
+  height: 3.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-inverted);
+}

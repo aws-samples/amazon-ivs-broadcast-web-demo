@@ -1,0 +1,27 @@
+.select {
+  display: flex;
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: 2px solid transparent;
+  color: var(--color-text-base);
+  background: var(--color-bg-input);
+  border-radius: var(--radius-small);
+  outline: none;
+  appearance: none;
+  resize: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.select:focus,
+.select:active {
+  border: 2px solid var(--color--primary);
+}
+
+.hint {
+  font-size: 1.2rem;
+  line-height: 1.2;
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: var(--color-text-hint)
+}

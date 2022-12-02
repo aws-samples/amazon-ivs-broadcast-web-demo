@@ -1,0 +1,54 @@
+/* Variables */
+.modalWrapper {
+  --color-bg-modal-overlay: #8d9ca7cc;
+}
+
+.modal {
+  --color-bg-modal: var(--color-bg-body);
+  --modal-width: 600px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalWrapper {
+    --color-bg-modal-overlay: #0f111299;
+  }
+}
+
+/* Classes */
+
+.modalWrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  /* Fix for overflowing buttons in Safari */
+  max-height: -webkit-fill-available;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.modal {
+  background-color: var(--color-bg-modal);
+  z-index: 10;
+  border-radius: var(--radius);
+}
+
+.modalFull {
+  width: var(--modal-width);
+  height: 100%;
+  border-radius: 0;
+}
+
+.modalBackground {
+  background-color: var(--color-bg-modal-overlay);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  position: absolute;
+  cursor: pointer;
+}
