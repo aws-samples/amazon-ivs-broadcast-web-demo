@@ -9,21 +9,9 @@ const useStream = () => {
     ingestServer,
     streamKey,
     channelType,
-    streamResolution,
     client,
     handleError
   ) => {
-    // Get the actual width and height from the selected resolution
-    const parsedConfig = getConfigFromResolution(streamResolution, channelType);
-    client.config.streamConfig = {
-      maxResolution: {
-        width: parsedConfig.w,
-        height: parsedConfig.h,
-      },
-      maxFramerate: 30,
-      maxBitrate: parsedConfig.bitrate,
-    };
-
     var timer;
     try {
       // Set the ingest server to re-validate it before attempting to start the stream.
@@ -52,7 +40,7 @@ const useStream = () => {
       switch (err.code) {
         case 10000:
           handleError(
-            `Error starting stream: Your stream settings are misconfigured. The Channel type you selected: ${
+            `Error starting stream: Your stream settings are misconfigured. This is likely caused by mismatched channel types. The Channel type you selected: ${
               channelType === 'STANDARD' ? 'Standard' : 'Basic'
             }, must match the channel type of your Amazon IVS Channel.`
           );
@@ -84,21 +72,13 @@ const useStream = () => {
     ingestServer,
     streamKey,
     channelType,
-    streamResolution,
     client,
     handleError
   ) => {
     if (isLive) {
       stopStream(client, handleError);
     } else {
-      startStream(
-        ingestServer,
-        streamKey,
-        channelType,
-        streamResolution,
-        client,
-        handleError
-      );
+      startStream(ingestServer, streamKey, channelType, client, handleError);
     }
   };
 

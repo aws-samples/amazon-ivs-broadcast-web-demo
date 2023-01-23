@@ -30,10 +30,13 @@ const MIC_LAYER_NAME = 'mic';
 
 export default function Broadcast() {
   const client = useRef(null);
-  const prevClient = useRef(null);
   const canvasRef = useRef(null);
-  const [channelType, setChannelType] = useState('STANDARD');
-  const [streamResolution, setStreamResolution] = useState('720');
+  const channelType = useRef('STANDARD');
+
+  // By default, initialize the stream canvas at 720p resolution.
+  // Higher resolutions (like 1920x1080) may result in poor performance on some devices.
+  const streamResolution = useRef('720');
+
   const [devicePermissions, setDevicePermissions] = useState({
     video: false,
     audio: false,
@@ -49,12 +52,7 @@ export default function Broadcast() {
     resetMixer,
   } = useMixer([]);
 
-  // By default, initialize the canvas at 720p resolution.
-  // Higher resolutions (like 1920x1080) may result in poor performance on some devices.
-  const { captureStream, startScreenShare, stopScreenShare } = useScreenShare({
-    width: 1280,
-    height: 720,
-  });
+  const { captureStream, startScreenShare, stopScreenShare } = useScreenShare();
 
   const { isLive, streamLoading, toggleStream } = useStream();
 
@@ -79,6 +77,10 @@ export default function Broadcast() {
 
   const [version, setVersion] = useState();
 
+  // Router is used to check for URL parameters
+  // For example the stream key, ingest server, and channel type can be
+  // prepopulated with the following URL parameters
+  // <baseUrl>/?uid=abc123def456&sk=sk_us-west-2_123456789012_aaaaaaaaaaaaaaaaa&channelType=BASIC
   const router = useRouter();
 
   // This tool is only tested on desktop version of Firefox and Chrome
@@ -96,8 +98,6 @@ export default function Broadcast() {
   const handlePermissions = async () => {
     try {
       // Width and height are set to attempt to get max resolution video feed
-      const maxWidth = client.current.config.streamConfig.maxResolution.width;
-      const maxHeight = client.current.config.streamConfig.maxResolution.height;
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -117,8 +117,7 @@ export default function Broadcast() {
       toggleStream(
         ingestServer,
         streamKey,
-        channelType,
-        streamResolution,
+        channelType.current,
         client.current,
         handleError
       );
@@ -193,6 +192,9 @@ export default function Broadcast() {
       handleError(`Screen share error: Broadcast SDK is not available.`);
       return;
     }
+
+    const canvas = client.current.getCanvasDimensions();
+
     // Toggle the state of the active screen share
     try {
       if (captureStream?.active) {
@@ -213,6 +215,7 @@ export default function Broadcast() {
           removeLayer,
           removeMixerDevice,
           addAudioTrack,
+          canvas,
           client.current
         );
       }
@@ -251,8 +254,8 @@ export default function Broadcast() {
     }
   };
 
-  // Initialize the broadcast client...
-  const initClient = async () => {
+  // Initialize canvas layers...
+  const initLayers = async () => {
     // If the user has not provided permissions, get them.
     if (!devicePermissions.video) {
       try {
@@ -284,56 +287,63 @@ export default function Broadcast() {
       height: canvas.width / 8,
       type: 'IMAGE',
     };
-    addLayer(camOffLayer, client.current);
 
     try {
-      // Fetch saved devices from localstorage
-      const savedVideoDeviceId = localStorage.getItem('savedVideoDeviceId');
-      const savedAudioDeviceId = localStorage.getItem('savedAudioDeviceId');
+      await addLayer(camOffLayer, client.current);
+    } catch (err) {
+      handleError(
+        'Error: Failed to add a layer to the canvas. If the problem persists, try refreshing the app.'
+      );
+    }
 
+    try {
       // Get video devices
-      const vd = await getVideoDevices(client.current);
+      var vd = await getVideoDevices(client.current);
       setVideoDevices(vd);
 
-      // Set default video device
+      // Get audio devices
+      var ad = await getAudioDevices(client.current);
+      setAudioDevices(ad);
+    } catch (err) {
+      console.error(err);
+      handleError(
+        'Error: Could not find any available video or audio devices. Please ensure that a camera or microphone is attached to your device, and your privacy settings allow this app access them.'
+      );
+    }
+
+    // Fetch saved devices from localstorage
+    const savedVideoDeviceId = localStorage.getItem('savedVideoDeviceId');
+    const savedAudioDeviceId = localStorage.getItem('savedAudioDeviceId');
+    try {
+      // If there is not active video device, set the default video device as the active device
       if (!activeVideoDevice.current) {
         const savedVideoDevice = vd.find(
           (device) => device.deviceId === savedVideoDeviceId
         );
         activeVideoDevice.current = savedVideoDevice ? savedVideoDevice : vd[0];
       }
+      // Render the video device on the broadcast canvas
       renderActiveVideoDevice();
 
-      // Get audio devices
-      const ad = await getAudioDevices(client.current);
-      setAudioDevices(ad);
-
-      // Set default audio device
+      // If there is no active audio device, set the default audio device as the active device
       if (!activeAudioDevice.current) {
         const savedAudioDevice = ad.find(
           (device) => device.deviceId === savedAudioDeviceId
         );
         activeAudioDevice.current = savedAudioDevice ? savedAudioDevice : ad[0];
       }
+      // Add the active audio device to the broadcast mixer
       renderActiveAudioDevice();
     } catch (err) {
       console.error(err);
       handleError(
-        'Error: Could not find any video or audio devices. Please ensure that your browser and OS privacy settings allow this app access to your camera and microphone.'
+        'Error: Could not add the selected audio and video devices to the canvas. Please check the app settings to ensure that the correct webcam and microphone are selected.'
       );
     }
   };
 
   // Handle active video device (webcam) changes...
   const renderActiveVideoDevice = () => {
-    // Stop streaming video from the existing webcam, if there is one
-    const stream = client.current.getVideoInputDevice(CAM_LAYER_NAME);
-    if (stream) {
-      for (const track of stream.source.getVideoTracks()) {
-        track.stop();
-      }
-    }
-
     const canvas = client.current.getCanvasDimensions();
     const deviceToAdd = activeVideoDevice.current;
 
@@ -379,32 +389,21 @@ export default function Broadcast() {
     if (!client.current) return;
     if (isLive) return;
 
-    const reInitClient = async () => {
-      await resetLayers(client.current);
-      await resetMixer(client.current);
+    const updateClientConfig = async () => {
       client.current.detachPreview();
 
-      const parsedConfig = getConfigFromResolution(
-        streamResolution,
-        channelType
+      await resetLayers(client.current);
+      await resetMixer(client.current);
+
+      const streamConfig = getConfigFromResolution(
+        streamResolution.current,
+        channelType.current
       );
-      const newClient = IVSBroadcastClient.create({
-        streamConfig: {
-          maxResolution: {
-            width: parsedConfig.w,
-            height: parsedConfig.h,
-          },
-          maxFramerate: 30,
-          maxBitrate: parsedConfig.bitrate,
-        },
-      });
 
-      prevClient.current = client.current;
-      client.current = newClient;
+      // Set the streamConfig to the new one, with updated resolution.
+      client.current.config.streamConfig = streamConfig;
 
-      prevClient.current.delete();
-      prevClient.current = null;
-      await initClient();
+      await initLayers();
     };
 
     // captureStream?.active is truthy when screensharing
@@ -418,12 +417,12 @@ export default function Broadcast() {
           updateLayer,
           client.current
         );
-        await reInitClient();
+        await updateClientConfig();
       } catch (err) {
         handleError(`Screen share error: ${err.message}`);
       }
     } else {
-      await reInitClient();
+      await updateClientConfig();
     }
   };
 
@@ -438,20 +437,20 @@ export default function Broadcast() {
     if (localStorage) {
       const sk = localStorage.getItem('sk');
       const ingestEndpoint = localStorage.getItem('ingestEndpoint');
-      const channelType = localStorage.getItem('channelType');
-      let streamResolution = localStorage.getItem('streamResolution');
+      const savedChannelType = localStorage.getItem('channelType');
+      let savedResolution = localStorage.getItem('streamResolution');
       const persistSettings = localStorage.getItem('rememberSettings');
 
       // Handles an edge-case when upgrading from
       // previous versions of the streaming tool
-      if (streamResolution === '[object Object]') {
-        streamResolution = '720';
+      if (savedResolution === '[object Object]') {
+        savedResolution = '720';
       }
 
       if (sk) setStreamKey(sk);
       if (ingestEndpoint) setIngestServer(ingestEndpoint);
-      if (channelType) setChannelType(channelType);
-      if (streamResolution) setStreamResolution(streamResolution);
+      if (savedChannelType) channelType.current = savedChannelType;
+      if (savedResolution) streamResolution.current = savedResolution;
       if (persistSettings) setRememberSettings(persistSettings);
     }
   }, []);
@@ -503,24 +502,16 @@ export default function Broadcast() {
           src='https://web-broadcast.live-video.net/1.2.0/amazon-ivs-web-broadcast.js'
           strategy='afterInteractive'
           onLoad={() => {
-            const parsedConfig = getConfigFromResolution(
-              streamResolution,
-              channelType
+            const streamConfig = getConfigFromResolution(
+              streamResolution.current,
+              channelType.current
             );
             const IVSClient = IVSBroadcastClient.create({
-              streamConfig: {
-                maxResolution: {
-                  width: parsedConfig.w,
-                  height: parsedConfig.h,
-                },
-                maxFramerate: 30,
-                maxBitrate: parsedConfig.bitrate,
-              },
-              logLevel: IVSBroadcastClient.LOG_LEVEL.ERROR,
+              streamConfig: streamConfig,
             });
             client.current = IVSClient;
             setVersion(IVSBroadcastClient.__version);
-            initClient();
+            initLayers();
           }}
         />
         <AlertBar
@@ -533,7 +524,10 @@ export default function Broadcast() {
           }
         />
         <div className={styles.statusBar}>
-          <StatusBar isLive={isLive} streamResolution={streamResolution} />
+          <StatusBar
+            isLive={isLive}
+            streamResolution={streamResolution.current}
+          />
         </div>
         <div className={styles.streamPreview}>
           <StreamPreview
@@ -593,11 +587,11 @@ export default function Broadcast() {
           client={client.current}
           isSupported={isSupported}
           isLive={isLive}
-          defaultChannelType={channelType}
+          defaultChannelType={channelType.current}
           defaultIngestServer={ingestServer}
           defaultStreamKey={streamKey}
           defaultRemember={rememberSettings}
-          defaultResolution={streamResolution}
+          defaultResolution={streamResolution.current}
           videoDevices={videoDevices}
           audioDevices={audioDevices}
           activeVideoDeviceId={
@@ -620,11 +614,11 @@ export default function Broadcast() {
             activeAudioDevice.current = device;
             if (!clientUpdateRequired) renderActiveAudioDevice();
           }}
-          handleChannelTypeChange={(channelType) => {
-            setChannelType(channelType);
+          handleChannelTypeChange={(channel) => {
+            channelType.current = channel;
           }}
           handleResolutionChange={(resolution) => {
-            setStreamResolution(resolution);
+            streamResolution.current = resolution;
           }}
           handleIngestChange={(server) => {
             setIngestServer(server);

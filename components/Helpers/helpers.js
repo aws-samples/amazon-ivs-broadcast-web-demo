@@ -1,3 +1,15 @@
+function formatConfig(config) {
+  const streamConfig = {
+    maxResolution: {
+      width: config.w,
+      height: config.h,
+    },
+    maxFramerate: 30,
+    maxBitrate: config.bitrate,
+  };
+  return streamConfig;
+}
+
 function getConfigFromResolution(resolution, channelType) {
   var config, bitrate;
   switch (resolution) {
@@ -42,7 +54,8 @@ function getConfigFromResolution(resolution, channelType) {
       };
       break;
   }
-  return config;
+  const streamConfig = formatConfig(config);
+  return streamConfig;
 }
 
 export { getConfigFromResolution };
