@@ -5,7 +5,7 @@ const SCREENSHARE_MIXER_NAME = 'screen-audio';
 const CAM_LAYER_NAME = 'camera';
 const CAM_PADDING = 20;
 
-const useScreenShare = (dimensions) => {
+const useScreenShare = () => {
   const [captureStream, setCaptureStream] = useState(null);
 
   const getCaptureStream = async () => {
@@ -50,7 +50,8 @@ const useScreenShare = (dimensions) => {
     camMuted,
     updateLayer,
     addLayer,
-    client
+    client,
+    canvas
   ) => {
     const layer = {
       stream: screenCaptureStream,
@@ -65,10 +66,10 @@ const useScreenShare = (dimensions) => {
       name: CAM_LAYER_NAME,
       index: 4,
       visible: camMuted,
-      x: dimensions.width - dimensions.width / 4 - CAM_PADDING,
-      y: dimensions.height - dimensions.height / 4 - CAM_PADDING,
-      width: dimensions.width / 4,
-      height: dimensions.height / 4,
+      x: canvas.width - canvas.width / 4 - CAM_PADDING,
+      y: canvas.height - canvas.height / 4 - CAM_PADDING,
+      width: canvas.width / 4,
+      height: canvas.height / 4,
       type: 'VIDEO',
     };
 
@@ -85,6 +86,7 @@ const useScreenShare = (dimensions) => {
     removeLayer,
     removeMixerDevice,
     addAudioTrack,
+    canvas,
     client
   ) => {
     try {
@@ -108,7 +110,8 @@ const useScreenShare = (dimensions) => {
         camMuted,
         updateLayer,
         addLayer,
-        client
+        client,
+        canvas
       );
 
       startAudioShare(screenCaptureStream, addAudioTrack, client);

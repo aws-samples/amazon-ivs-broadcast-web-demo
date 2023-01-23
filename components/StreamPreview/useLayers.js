@@ -76,14 +76,14 @@ const useLayers = (initialLayer) => {
 
         // If a layer with the same name is already added, remove it
         if (client.getVideoInputDevice(layer.name)) {
-          removeLayer(layer, client);
+          await removeLayer(layer, client);
         }
 
         // Width: 1920, Height: 1080 is 16:9 "1080p"
         // Width: 3840, Height: 2160 is 16:9 "4k"
         const cameraStream = await navigator.mediaDevices.getUserMedia({
           video: {
-            deviceId: device.deviceId,
+            deviceId: { exact: device.deviceId },
             width: {
               ideal: 1920,
               max: 3840,
@@ -114,7 +114,7 @@ const useLayers = (initialLayer) => {
 
         // If a layer with the same name is already added, remove it
         if (client.getVideoInputDevice(layer.name)) {
-          removeLayer(layer, client);
+          await removeLayer(layer, client);
         }
 
         await client.addVideoInputDevice(stream, name, layerProps);
@@ -132,7 +132,7 @@ const useLayers = (initialLayer) => {
 
       // If a layer with the same name is already added, throw an error
       if (client.getVideoInputDevice(layer.name)) {
-        removeLayer(layer, client);
+        await removeLayer(layer, client);
       }
 
       const img = new Image();
@@ -160,9 +160,21 @@ const useLayers = (initialLayer) => {
       if (!name) return;
       switch (layer.type) {
         case 'VIDEO':
+          const videoStream = client.getVideoInputDevice(name);
+          if (videoStream) {
+            for (const track of videoStream.source.getVideoTracks()) {
+              track.stop();
+            }
+          }
           await client.removeVideoInputDevice(name);
           break;
         case 'SCREENSHARE':
+          const screenShareStream = client.getVideoInputDevice(name);
+          if (screenShareStream) {
+            for (const track of screenShareStream.source.getVideoTracks()) {
+              track.stop();
+            }
+          }
           await client.removeVideoInputDevice(name);
           break;
         case 'IMAGE':
