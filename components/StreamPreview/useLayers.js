@@ -22,7 +22,6 @@ const useLayers = (initialLayer) => {
   const updateLayer = async (layer, client) => {
     switch (layer.type) {
       case "VIDEO":
-      case "VIDEO":
         updateSDKLayer(layer, client);
         break;
       case "SCREENSHARE":
@@ -204,8 +203,6 @@ const useLayers = (initialLayer) => {
           await client.removeVideoInputDevice(name);
           break;
         case "FILTER":
-          await client.removeImage(name);
-          break;
         case "IMAGE":
           await client.removeImage(name);
           break;
