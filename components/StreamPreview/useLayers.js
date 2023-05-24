@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 // Keeps track of layer state on the canvas.
 
@@ -21,13 +21,13 @@ const useLayers = (initialLayer) => {
   // Adds a layer to the layer array and draws it to the canvas
   const updateLayer = async (layer, client) => {
     switch (layer.type) {
-      case "VIDEO":
+      case 'VIDEO':
         updateSDKLayer(layer, client);
         break;
-      case "SCREENSHARE":
+      case 'SCREENSHARE':
         updateSDKLayer(layer, client);
         break;
-      case "IMAGE":
+      case 'IMAGE':
         updateSDKLayer(layer, client);
         break;
       default:
@@ -51,16 +51,16 @@ const useLayers = (initialLayer) => {
   const addLayer = async (layer, client, cameraKitSession = null) => {
     try {
       switch (layer.type) {
-        case "VIDEO":
+        case 'VIDEO':
           await addVideoLayer(layer, client);
           break;
-        case "FILTER":
+        case 'FILTER':
           await addFilterLayer(layer, client, cameraKitSession);
           break;
-        case "SCREENSHARE":
+        case 'SCREENSHARE':
           await addScreenshareLayer(layer, client);
           break;
-        case "IMAGE":
+        case 'IMAGE':
           await addImageLayer(layer, client);
           break;
         default:
@@ -101,7 +101,7 @@ const useLayers = (initialLayer) => {
         });
 
         await client.addVideoInputDevice(cameraStream, name, layerProps);
-        console.log("added video input device: ", cameraStream);
+        console.log('added video input device: ', cameraStream);
       }
       setLayers((prevState) => [...prevState, layer]);
     } catch (err) {
@@ -118,8 +118,12 @@ const useLayers = (initialLayer) => {
       if (client.getVideoInputDevice(layer.name)) {
         await removeLayer(layer, client, cameraKitSession);
       } else {
-        cameraKitSession.play("live");
-        await client.addImageSource(cameraKitSession.output.live, name, layerProps);
+        cameraKitSession.play('live');
+        await client.addImageSource(
+          cameraKitSession.output.live,
+          name,
+          layerProps
+        );
       }
 
       setLayers((prevState) => [...prevState, layer]);
@@ -161,7 +165,7 @@ const useLayers = (initialLayer) => {
       img.src = `${imageSrc}`;
 
       img.addEventListener(
-        "load",
+        'load',
         async () => {
           await client.addImageSource(img, name, layerProps);
           setLayers((prevState) => [...prevState, layer]);
@@ -181,19 +185,19 @@ const useLayers = (initialLayer) => {
       const { name } = layer;
       if (!name) return;
       switch (layer.type) {
-        case "VIDEO":
+        case 'VIDEO':
           const videoStream = client.getVideoInputDevice(name);
           if (videoStream) {
             for (const track of videoStream.source.getVideoTracks()) {
               track.stop();
             }
           }
-          console.log("trying to remove video input device:", name);
+          console.log('trying to remove video input device:', name);
           await client.removeVideoInputDevice(name);
-          console.log("removed video input device: ", name);
+          console.log('removed video input device: ', name);
 
           break;
-        case "SCREENSHARE":
+        case 'SCREENSHARE':
           const screenShareStream = client.getVideoInputDevice(name);
           if (screenShareStream) {
             for (const track of screenShareStream.source.getVideoTracks()) {
@@ -202,14 +206,16 @@ const useLayers = (initialLayer) => {
           }
           await client.removeVideoInputDevice(name);
           break;
-        case "FILTER":
-        case "IMAGE":
+        case 'FILTER':
+        case 'IMAGE':
           await client.removeImage(name);
           break;
         default:
           break;
       }
-      setLayers((prevState) => prevState.filter((layer) => layer.name !== name));
+      setLayers((prevState) =>
+        prevState.filter((layer) => layer.name !== name)
+      );
     } catch (err) {
       console.error(err);
     }
