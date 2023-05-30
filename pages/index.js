@@ -185,11 +185,11 @@ export default function Broadcast() {
       setCamMuted(false);
     } else {
       if (filterEnabled) {
-        await removeLayer(filterLayer, client.current);
+        await removeLayer(filterLayer, client.current, cameraKitSession);
         setFilterEnabled(false);
         setSelectedFilter({ id: 0, name: 'Disabled' });
       } else {
-        await removeLayer(camLayer, client.current);
+        await removeLayer(camLayer, client.current, cameraKitSession);
       }
       setCamMuted(true);
     }
@@ -255,7 +255,7 @@ export default function Broadcast() {
 
       if (filterEnabled) {
         await addLayer(camLayer, client.current);
-        await removeLayer(filterLayer, client.current);
+        await removeLayer(filterLayer, client.current, cameraKitSession);
 
         if (captureStream?.active) updateLayer(camLayer, client.current);
 
@@ -297,7 +297,8 @@ export default function Broadcast() {
           removeLayer,
           removeMixerDevice,
           updateLayer,
-          client.current
+          client.current,
+          filterEnabled
         );
       } else {
         await startScreenShare(
@@ -530,10 +531,6 @@ export default function Broadcast() {
 
     // Handle Localstorage
     if (localStorage) {
-      console.log(
-        'NEXT_PUBLIC_SNAP_CAMERA_KIT_API_TOKEN',
-        process.env.NEXT_PUBLIC_SNAP_CAMERA_KIT_API_TOKEN
-      );
       const sk = localStorage.getItem('sk');
       const ingestEndpoint = localStorage.getItem('ingestEndpoint');
       const savedChannelType = localStorage.getItem('channelType');

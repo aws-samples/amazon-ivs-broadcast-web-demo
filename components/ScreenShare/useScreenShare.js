@@ -63,7 +63,6 @@ const useScreenShare = () => {
     };
 
     if (filterEnabled) {
-      console.log('filter enabled');
       const filterLayer = {
         name: 'filter',
         index: 4,
@@ -118,7 +117,8 @@ const useScreenShare = () => {
           removeLayer,
           removeMixerDevice,
           updateLayer,
-          client
+          client,
+          filterEnabled
         );
       };
 
@@ -146,7 +146,8 @@ const useScreenShare = () => {
     removeLayer,
     removeMixerDevice,
     updateLayer,
-    client
+    client,
+    filterEnabled
   ) => {
     // Stop screensharing
     if (captureStream?.getTracks()) {
@@ -166,15 +167,28 @@ const useScreenShare = () => {
       await removeMixerDevice({ name: SCREENSHARE_MIXER_NAME }, client);
     }
 
-    // Move the camera back into the original position
-    let camLayer = {
-      device: activeVideoDevice,
-      name: CAM_LAYER_NAME,
-      index: 4,
-      visible: camMuted,
-      type: 'VIDEO',
-    };
-    updateLayer(camLayer, client);
+    if (filterEnabled) {
+      // Move the camera with filter applied back into the original position
+      const filterLayer = {
+        device: activeVideoDevice,
+        name: 'filter',
+        index: 4,
+        visible: camMuted,
+        type: 'FILTER',
+      };
+      updateLayer(filterLayer, client);
+    } else {
+      // Move the camera back into the original position
+      let camLayer = {
+        device: activeVideoDevice,
+        name: CAM_LAYER_NAME,
+        index: 4,
+        visible: camMuted,
+        type: 'VIDEO',
+      };
+      updateLayer(camLayer, client);
+    }
+
     setCaptureStream(null);
   };
 

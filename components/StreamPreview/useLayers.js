@@ -206,6 +206,9 @@ const useLayers = (initialLayer) => {
           await client.removeVideoInputDevice(name);
           break;
         case 'FILTER':
+          cameraKitSession.pause();
+          await client.removeImage(name);
+          break;
         case 'IMAGE':
           await client.removeImage(name);
           break;
