@@ -500,11 +500,7 @@ export default function Broadcast() {
     if (typeof window === 'undefined') {
       return;
     }
-    const {
-      bootstrapCameraKit,
-      createUserMediaSource,
-      Transform2D,
-    } = require('@snap/camera-kit');
+    const { bootstrapCameraKit } = require('@snap/camera-kit');
 
     // Handle Localstorage
     if (localStorage) {

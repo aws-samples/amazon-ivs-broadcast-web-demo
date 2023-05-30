@@ -273,15 +273,20 @@ export default function ControlBar({
           </Button>
         </Tooltip>
       </div>
-      <FiltersMenu
-        handleFilters={handleFilters}
-        filterEnabled={filterEnabled}
-        setFilterEnabled={setFilterEnabled}
-        setSelectedFilter={setSelectedFilter}
-        selectedFilter={selectedFilter}
-        lenses={lenses}
-        cameraKitSession={cameraKitSession}
-      />
+      {!camMuted ? (
+        <FiltersMenu
+          handleFilters={handleFilters}
+          filterEnabled={filterEnabled}
+          setFilterEnabled={setFilterEnabled}
+          setSelectedFilter={setSelectedFilter}
+          selectedFilter={selectedFilter}
+          lenses={lenses}
+          cameraKitSession={cameraKitSession}
+        />
+      ) : (
+        <></>
+      )}
+
       <StreamButton
         isLive={isLive}
         handleStream={handleStream}
