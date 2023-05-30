@@ -27,6 +27,7 @@ import useStream from '../components/Stream';
 
 const CAM_LAYER_NAME = 'camera';
 const MIC_LAYER_NAME = 'mic';
+const CAM_PADDING = 20;
 
 export default function Broadcast() {
   const client = useRef(null);
@@ -216,9 +217,28 @@ export default function Broadcast() {
 
     try {
       const canvas = client.current.getCanvasDimensions();
+      let x = 0,
+        y = 0,
+        width = canvas.width,
+        height = canvas.height;
+
+      // Screenshare is active so filter layer should display in lower right corner in a smaller size
+      if (captureStream?.active) {
+        console.log('adjust size bc screenshare active');
+        x = canvas.width - canvas.width / 4 - CAM_PADDING;
+        y = canvas.height - canvas.height / 4 - CAM_PADDING;
+        width = canvas.width / 4;
+        height = canvas.height / 4;
+      }
+
       const filterLayer = {
         name: 'filter',
-        index: 1,
+        index: 4,
+        visible: true,
+        x,
+        y,
+        width,
+        height,
         type: 'FILTER',
       };
 
@@ -227,16 +247,19 @@ export default function Broadcast() {
         name: CAM_LAYER_NAME,
         index: 4,
         visible: true,
-        x: 0,
-        y: 0,
-        width: canvas.width,
-        height: canvas.height,
+        x,
+        y,
+        width,
+        height,
         type: 'VIDEO',
       };
 
       if (filterEnabled) {
         await addLayer(camLayer, client.current);
         await removeLayer(filterLayer, client.current);
+
+        if (captureStream?.active) updateLayer(camLayer, client.current);
+
         setFilterEnabled(false);
       } else {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -247,6 +270,9 @@ export default function Broadcast() {
 
         await removeLayer(camLayer, client.current);
         await addLayer(filterLayer, client.current, cameraKitSession);
+
+        if (captureStream?.active) updateLayer(filterLayer, client.current);
+
         setFilterEnabled(true);
       }
     } catch (err) {
@@ -284,7 +310,8 @@ export default function Broadcast() {
           removeMixerDevice,
           addAudioTrack,
           canvas,
-          client.current
+          client.current,
+          filterEnabled
         );
       }
     } catch (err) {
@@ -519,13 +546,6 @@ export default function Broadcast() {
         apiToken: process.env.NEXT_PUBLIC_SNAP_CAMERA_KIT_API_TOKEN,
       });
       const session = await cameraKit.createSession();
-      // const userMediaSource = await createUserMediaSource();
-      // setCameraKitSource(session, activeAudioDevice.current.deviceId)
-      console.log('activeVideoDevice.current', activeVideoDevice.current);
-      // activeVideoDevice.current.deviceId;
-      // await session.setSource(userMediaSource);
-      // userMediaSource.setTransform(Transform2D.Identity);
-      // userMediaSource.setRenderSize(1920, 1080);
 
       const { lenses } = await cameraKit.lensRepository.loadLensGroups([
         process.env.NEXT_PUBLIC_LENS_GROUP_ID,

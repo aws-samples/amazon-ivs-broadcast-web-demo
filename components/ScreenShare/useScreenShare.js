@@ -51,7 +51,8 @@ const useScreenShare = () => {
     updateLayer,
     addLayer,
     client,
-    canvas
+    canvas,
+    filterEnabled
   ) => {
     const layer = {
       stream: screenCaptureStream,
@@ -61,19 +62,35 @@ const useScreenShare = () => {
       type: 'SCREENSHARE',
     };
 
-    let camLayer = {
-      device: activeVideoDevice,
-      name: CAM_LAYER_NAME,
-      index: 4,
-      visible: camMuted,
-      x: canvas.width - canvas.width / 4 - CAM_PADDING,
-      y: canvas.height - canvas.height / 4 - CAM_PADDING,
-      width: canvas.width / 4,
-      height: canvas.height / 4,
-      type: 'VIDEO',
-    };
+    if (filterEnabled) {
+      console.log('filter enabled');
+      const filterLayer = {
+        name: 'filter',
+        index: 4,
+        visible: camMuted,
+        x: canvas.width - canvas.width / 4 - CAM_PADDING,
+        y: canvas.height - canvas.height / 4 - CAM_PADDING,
+        width: canvas.width / 4,
+        height: canvas.height / 4,
+        type: 'FILTER',
+      };
 
-    updateLayer(camLayer, client);
+      updateLayer(filterLayer, client);
+    } else {
+      let camLayer = {
+        device: activeVideoDevice,
+        name: CAM_LAYER_NAME,
+        index: 4,
+        visible: camMuted,
+        x: canvas.width - canvas.width / 4 - CAM_PADDING,
+        y: canvas.height - canvas.height / 4 - CAM_PADDING,
+        width: canvas.width / 4,
+        height: canvas.height / 4,
+        type: 'VIDEO',
+      };
+
+      updateLayer(camLayer, client);
+    }
     addLayer(layer, client);
   };
 
@@ -87,7 +104,8 @@ const useScreenShare = () => {
     removeMixerDevice,
     addAudioTrack,
     canvas,
-    client
+    client,
+    filterEnabled
   ) => {
     try {
       const screenCaptureStream = await getCaptureStream();
@@ -111,7 +129,8 @@ const useScreenShare = () => {
         updateLayer,
         addLayer,
         client,
-        canvas
+        canvas,
+        filterEnabled
       );
 
       startAudioShare(screenCaptureStream, addAudioTrack, client);

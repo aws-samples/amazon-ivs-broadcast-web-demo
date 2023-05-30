@@ -30,6 +30,9 @@ const useLayers = (initialLayer) => {
       case 'IMAGE':
         updateSDKLayer(layer, client);
         break;
+      case 'FILTER':
+        updateSDKLayer(layer, client);
+        break;
       default:
         break;
     }
@@ -101,7 +104,6 @@ const useLayers = (initialLayer) => {
         });
 
         await client.addVideoInputDevice(cameraStream, name, layerProps);
-        console.log('added video input device: ', cameraStream);
       }
       setLayers((prevState) => [...prevState, layer]);
     } catch (err) {
