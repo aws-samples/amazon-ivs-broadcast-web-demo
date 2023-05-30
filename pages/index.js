@@ -224,7 +224,6 @@ export default function Broadcast() {
 
       // Screenshare is active so filter layer should display in lower right corner in a smaller size
       if (captureStream?.active) {
-        console.log('adjust size bc screenshare active');
         x = canvas.width - canvas.width / 4 - CAM_PADDING;
         y = canvas.height - canvas.height / 4 - CAM_PADDING;
         width = canvas.width / 4;

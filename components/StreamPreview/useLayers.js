@@ -194,10 +194,7 @@ const useLayers = (initialLayer) => {
               track.stop();
             }
           }
-          console.log('trying to remove video input device:', name);
           await client.removeVideoInputDevice(name);
-          console.log('removed video input device: ', name);
-
           break;
         case 'SCREENSHARE':
           const screenShareStream = client.getVideoInputDevice(name);
