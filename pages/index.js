@@ -207,6 +207,8 @@ export default function Broadcast() {
   };
 
   const handleFilters = async () => {
+    const { createMediaStreamSource } = require('@snap/camera-kit');
+
     if (!client.current) {
       handleError(`Filter error: Broadcast SDK is not available.`);
       return;
@@ -237,6 +239,12 @@ export default function Broadcast() {
         await removeLayer(filterLayer, client.current);
         setFilterEnabled(false);
       } else {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: activeVideoDevice.current.deviceId },
+        });
+        const source = createMediaStreamSource(mediaStream);
+        await cameraKitSession.setSource(source);
+
         await removeLayer(camLayer, client.current);
         await addLayer(filterLayer, client.current, cameraKitSession);
         setFilterEnabled(true);
@@ -515,10 +523,13 @@ export default function Broadcast() {
         apiToken: process.env.NEXT_PUBLIC_SNAP_CAMERA_KIT_API_TOKEN,
       });
       const session = await cameraKit.createSession();
-      const userMediaSource = await createUserMediaSource();
-      await session.setSource(userMediaSource);
-      userMediaSource.setTransform(Transform2D.Identity);
-      userMediaSource.setRenderSize(1920, 1080);
+      // const userMediaSource = await createUserMediaSource();
+      // setCameraKitSource(session, activeAudioDevice.current.deviceId)
+      console.log('activeVideoDevice.current', activeVideoDevice.current);
+      // activeVideoDevice.current.deviceId;
+      // await session.setSource(userMediaSource);
+      // userMediaSource.setTransform(Transform2D.Identity);
+      // userMediaSource.setRenderSize(1920, 1080);
 
       const { lenses } = await cameraKit.lensRepository.loadLensGroups([
         process.env.NEXT_PUBLIC_LENS_GROUP_ID,
