@@ -88,6 +88,9 @@ export default function Broadcast() {
   // may work, but are not fully supported.
   const isSupported = isDesktop && (isFirefox || isChrome);
   const [showAlert, setShowAlert] = useState(!isSupported);
+  const title = `Amazon IVS – Web Broadcast Tool - ${
+    isLive ? 'LIVE' : 'Offline'
+  }`;
 
   const handleError = (message) => {
     toggleErrorAlert();
@@ -489,9 +492,7 @@ export default function Broadcast() {
     <>
       <div className={styles.broadcastWrapper}>
         <Head>
-          <title>
-            Amazon IVS – Web Broadcast Tool - {`${isLive ? 'LIVE' : 'Offline'}`}
-          </title>
+          <title>{title}</title>
           <meta
             name='description'
             content='This tool can be used to stream your webcam and share your screen to an Amazon IVS Channel.'
