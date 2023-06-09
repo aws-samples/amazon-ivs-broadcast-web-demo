@@ -39,7 +39,7 @@ Amazon Interactive Video Service (Amazon IVS) is a managed live streaming and st
 
 ## Security
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+See [CONTRIBUTING](https://github.com/aws-samples/amazon-ivs-broadcast-web-demo/blob/main/CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
