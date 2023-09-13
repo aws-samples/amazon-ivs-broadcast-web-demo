@@ -243,7 +243,13 @@ export default function Settings({
           {isSupported ? (
             <div className={styles.previewWrapper}>
               <div className={styles.previewInner}>
-                <video className={styles.previewVideo} ref={previewRef}></video>
+                <video
+                  autoPlay={true}
+                  playsInline={true}
+                  muted={true}
+                  className={styles.previewVideo}
+                  ref={previewRef}
+                ></video>
               </div>
             </div>
           ) : (

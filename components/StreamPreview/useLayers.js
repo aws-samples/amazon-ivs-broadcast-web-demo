@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isIOS, isAndroid } from 'react-device-detect';
 
 // Keeps track of layer state on the canvas.
 
@@ -81,20 +82,32 @@ const useLayers = (initialLayer) => {
 
         // Width: 1920, Height: 1080 is 16:9 "1080p"
         // Width: 3840, Height: 2160 is 16:9 "4k"
+        let width = { ideal: 1280, max: 3840 };
+        let height = { ideal: 720, max: 2160 };
+        let aspect = { ideal: 16 / 9 };
+
+        // If the user is on a mobile device, flip the width and height when in portrait
+        // This fixes a common issue on iOS and Android
+        if (isIOS || isAndroid) {
+          width = { ideal: 720, max: 2160 };
+          height = { ideal: 1280, max: 3840 };
+          aspect = { ideal: 9 / 16 };
+        }
+
         const cameraStream = await navigator.mediaDevices.getUserMedia({
           video: {
             deviceId: { exact: device.deviceId },
             width: {
-              ideal: 1920,
-              max: 3840,
+              ideal: width.ideal,
+              max: width.max,
             },
             height: {
-              ideal: 1080,
-              max: 2160,
+              ideal: height.ideal,
+              max: height.max,
             },
           },
           audio: true,
-          aspectRatio: { ideal: 16 / 9 },
+          aspectRatio: aspect.ideal,
           frameRate: 30,
         });
 
