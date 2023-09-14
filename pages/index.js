@@ -500,7 +500,7 @@ export default function Broadcast() {
           <link rel='icon' href='/favicon.ico' />
         </Head>
         <Script
-          src='https://web-broadcast.live-video.net/1.5.1/amazon-ivs-web-broadcast.js'
+          src='https://web-broadcast.live-video.net/1.5.2/amazon-ivs-web-broadcast.js'
           strategy='afterInteractive'
           onLoad={() => {
             const streamConfig = getConfigFromResolution(
