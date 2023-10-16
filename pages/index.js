@@ -100,7 +100,7 @@ export default function Broadcast() {
 
   const handlePermissions = async () => {
     try {
-      // Width and height are set to attempt to get max resolution video feed
+      // See useLayers.js > addVideoLayer() to modify the requested webcam resolution
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
