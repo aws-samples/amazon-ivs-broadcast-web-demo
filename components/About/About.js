@@ -1,13 +1,16 @@
 import styles from './About.module.css';
 import Button from '../Button';
 import Icon from '../Icon';
+import { useContext } from 'react';
+import { ModalContext } from '@/providers/ModalContext';
 
 export default function About({ version, handleModalClose }) {
+  const { toggleModal } = useContext(ModalContext);
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <div className={styles.title}>
-          <Icon size={'lg'}>
+    <div className='grid grid-rows-[1fr_auto] w-full max-w-sm h-full gap-4 bg-surface rounded-xl text-uiText ring-1 ring-border/80 shadow-xl'>
+      <div className='p-6 pb-0 overflow-y-auto overflow-x-hidden'>
+        <div className='flex flex-col items-center justify-center text-center gap-4'>
+          <Icon size={'xl'}>
             <svg
               fill='none'
               height='160'
@@ -54,15 +57,16 @@ export default function About({ version, handleModalClose }) {
           </Icon>
           <h3>Amazon IVS Web Broadcast Tool</h3>
         </div>
-        <div className={styles.body}>
-          <p className={styles.bodyText}>
+        <div className='flex text-center flex-col'>
+          <p className='text-sm mb-3 text-uiText/50'>
             SDK Version: {`${version.split('-')[0]}`}
           </p>
-          <div className={styles.terms}>
+          <div className='flex justify-center gap-3 text-xs mb-1'>
             <a
               href='https://aws.amazon.com/terms/?nc1=f_pr'
               target='_blank'
               rel='noreferrer noopener'
+              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
             >
               Site Terms↗
             </a>
@@ -70,18 +74,19 @@ export default function About({ version, handleModalClose }) {
               href='https://aws.amazon.com/privacy/'
               target='_blank'
               rel='noreferrer noopener'
+              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
             >
               Privacy Policy↗
             </a>
           </div>
-          <p className={styles.policy}>
+          <p className='text-xs text-uiText/50'>
             © 2022 Amazon Web Services, Inc. or its affiliates.
           </p>
-          <p className={styles.policy}>All rights reserved.</p>
+          <p className='text-xs text-uiText/50'>All rights reserved.</p>
         </div>
       </div>
-      <footer className={styles.footer}>
-        <Button type={'base'} fullWidth={true} onClick={handleModalClose}>
+      <footer className='flex flex-col w-full items-center justify-center gap-4 p-6 pt-0'>
+        <Button style='roundedText' fullWidth={true} onClick={toggleModal}>
           Close
         </Button>
       </footer>

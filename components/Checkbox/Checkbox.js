@@ -1,5 +1,5 @@
-import styles from "./Checkbox.module.css";
-import { useState } from "react";
+import styles from './Checkbox.module.css';
+import { useState } from 'react';
 
 export default function Checkbox({
   label,
@@ -9,7 +9,7 @@ export default function Checkbox({
   error,
   ...inputProps
 }) {
-  const [checked, setChecked] = useState(defaultValue === 'true');
+  const [checked, setChecked] = useState(defaultValue);
 
   const handleChange = () => {
     const newChecked = !checked;
@@ -21,7 +21,7 @@ export default function Checkbox({
     <div>
       <label className={styles.checkboxLabel}>
         <input
-          type="checkbox"
+          type='checkbox'
           className={styles.input}
           checked={checked}
           onChange={handleChange}

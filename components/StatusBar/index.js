@@ -1,3 +1,3 @@
-import StatusBar from "./StatusBar.js";
+import _ from './StatusBar.js';
 
-export default StatusBar;
+export default _;

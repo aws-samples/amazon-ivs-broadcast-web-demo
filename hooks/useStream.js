@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { getConfigFromResolution } from '../Helpers';
 
 const useStream = () => {
   const [isLive, setIsLive] = useState(false);

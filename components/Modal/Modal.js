@@ -1,55 +1,44 @@
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import ReactDOM from 'react-dom';
-import styles from './Modal.module.css';
+import clsx from 'clsx';
 
-export default function Modal({ type, show, onShow, onClose, children }) {
+export default function Modal({ type, show, onClose, children }) {
   // Nextjs browser env check
   if (typeof window === 'undefined') {
     return <></>;
   }
 
-  // Return if the modal is hidden
-  if (!show) {
-    return <></>;
-  }
-
-  // Call onShow
-  if (onShow) onShow();
-
-  let modalStyle = `${styles.modal}`;
-
-  switch (type) {
-    case 'full':
-      modalStyle = `${styles.modal} ${styles.modalFull}`;
-      break;
-    default:
-      break;
-  }
-
-  // When a modal is mounted, listen for keypresses on the window object.
-  useEffect(() => {
-    const closeModal = (e) => {
-      if (e.key === 'Escape') {
-        onClose(e);
-      }
-    };
-    window.addEventListener('keydown', closeModal);
-    return () => {
-      window.removeEventListener('keydown', closeModal);
-    };
-  }, []);
-
-  // Set Content
-  const content = (
-    <div className={styles.modalWrapper}>
-      <div className={styles.modalBackground} onClick={onClose}></div>
-      <div className={modalStyle}>{children}</div>
-    </div>
-  );
-
-  // Render Portal
-  return ReactDOM.createPortal(
-    content,
-    document.getElementById('modal-container')
+  return (
+    <Transition show={show} as={Fragment}>
+      <Dialog onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          <div className='fixed inset-0 bg-overlay/80 backdrop-blur' />
+        </Transition.Child>
+        <div className='fixed inset-0 overflow-y-auto'>
+          <div className='flex min-h-full items-center justify-center'>
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0 scale-95'
+              enterTo='opacity-100 scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 scale-100'
+              leaveTo='opacity-0 scale-95'
+            >
+              <Dialog.Panel>{children}</Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
   );
 }

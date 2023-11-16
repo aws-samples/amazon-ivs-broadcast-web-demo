@@ -1,3 +1,3 @@
-import ControlBar from "./ControlBar.js";
+import _ from './ControlBar.js';
 
-export default ControlBar;
+export default _;

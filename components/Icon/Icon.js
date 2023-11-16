@@ -1,52 +1,31 @@
-import styles from "./Icon.module.css";
-import { useEffect, useState } from "react";
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
-export default function Icon({ type, size, children }) {
-  const [colorClass, setColorClass] = useState(styles.iconColorCurrent);
-  const [sizeClass, setSizeClass] = useState(styles.iconSizeBase);
-
-  useEffect(() => {
-    switch (type) {
-      case "base":
-        setColorClass(styles.iconColorBase)
-        break;
-      case "inverted":
-        setColorClass(styles.iconColorInverted)
-        break;
-      case "success":
-        setColorClass(styles.iconColorSuccess)
-        break;
-      case "error":
-        setColorClass(styles.iconColorError)
-        break;
-      default:
-        setColorClass(styles.iconColorCurrent)
-        break;
-    }
-  }, [type])
-
-  useEffect(() => {
-    switch (size) {
-      case "sm":
-        setSizeClass(styles.iconSizeSm);
-        break;
-      case "md":
-        setSizeClass(styles.iconSizeMd);
-        break;
-      case "lg":
-        setSizeClass(styles.iconSizeLg);
-        break;  
-      case "xl":
-        setSizeClass(styles.iconSizeXl);
-        break;  
-      default:
-        setSizeClass(styles.iconSizeBase);
-        break;
-    }
-  }, [size])
+export default function Icon({ type, size, children, ...additonalProps }) {
+  const iconClass = twMerge(
+    clsx(
+      'inline-flex',
+      'items-center',
+      'justify-center',
+      'fill-current',
+      'w-6',
+      'h-6',
+      {
+        'text-uiText': type === 'base',
+        'text-uiTextAlt': type === 'inverted',
+        'text-positive': type === 'success',
+        'text-destruct': type === 'error',
+        'text-warn': type === 'warn',
+        'w-4 h-4': size === 'sm',
+        'w-8 h-8': size === 'md',
+        'w-12 h-12': size === 'lg',
+        'w-24 h-24': size === 'xl',
+      }
+    )
+  );
 
   return (
-    <span className={`${styles.icon} ${colorClass} ${sizeClass}`}>
+    <span className={iconClass} {...additonalProps}>
       {children}
     </span>
   );

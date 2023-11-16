@@ -1,3 +1,3 @@
-import useStream from "./useStream.js";
+import useStream from '../../hooks/useStream.js';
 
 export default useStream;

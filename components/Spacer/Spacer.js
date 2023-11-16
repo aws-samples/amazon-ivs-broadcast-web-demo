@@ -1,25 +1,14 @@
-import styles from "./Spacer.module.css"
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
 export default function Spacer({ size }) {
-  var sizeClass;
-  switch (size) {
-    case "sm":
-      sizeClass = styles.spacerSm;
-      break;
-    case "md":
-      sizeClass = styles.spacerMd;
-      break;
-    case "lg":
-      sizeClass = styles.spacerLg;
-      break;  
-    case "xl":
-      sizeClass = styles.spacerXl;
-      break;  
-    default:
-      sizeClass = styles.spacerBase;
-      break;
-  }
-  return (
-    <div className={`${styles.spacer} ${sizeClass}`}></div>
-  )
+  const sizeClass = twMerge(
+    clsx('w-full', 'h-0', 'border-b border-border', 'pt-5 mb-5', {
+      'pt-1 mb-1': size === 'sm',
+      'pt-2 mb-2': size === 'md',
+      'pt-4 mb-4': size === 'lg',
+      'pt-6 mb-6': size === 'lg',
+    })
+  );
+  return <div className={sizeClass}></div>;
 }
