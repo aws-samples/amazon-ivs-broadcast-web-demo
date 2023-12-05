@@ -46,7 +46,6 @@ export default function BroadcastApp() {
             config: configRef.current,
             ingestEndpoint,
           }).then((client) => {
-            // const { width, height } = client.getCanvasDimensions();
             showFullScreenCam({
               cameraStream: canvasElemRef.current,
               cameraId: videoDeviceId,

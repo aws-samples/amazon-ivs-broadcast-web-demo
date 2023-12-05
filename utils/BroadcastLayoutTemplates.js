@@ -1,6 +1,7 @@
 export const DEFAULT_TEMPLATE = ({
   cameraContent,
   cameraId,
+  cameraVisible = true,
   cameraOffContent,
   backgroundContent,
   micId,
@@ -18,8 +19,8 @@ export const DEFAULT_TEMPLATE = ({
           z: 2,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: cameraVisible,
         content: cameraContent,
       },
       {
@@ -31,8 +32,8 @@ export const DEFAULT_TEMPLATE = ({
           z: 1,
           w: 'CANVAS_WIDTH * 0.25',
           h: 'CANVAS_HEIGHT * 0.25',
-          visible: true,
         },
+        visible: true,
         content: cameraOffContent,
       },
       {
@@ -44,8 +45,8 @@ export const DEFAULT_TEMPLATE = ({
           z: 0,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: true,
         content: backgroundContent,
       },
     ],
@@ -58,6 +59,7 @@ export const DEFAULT_TEMPLATE = ({
     update: ({
       cameraContent: _cameraContent,
       cameraId: _cameraId,
+      cameraVisible: _cameraVisible,
       cameraOffContent: _cameraOffContent,
       backgroundContent: _backgroundContent,
       micId: _micId,
@@ -66,6 +68,7 @@ export const DEFAULT_TEMPLATE = ({
       const newProps = {
         cameraContent: _cameraContent || cameraContent,
         cameraId: _cameraId || cameraId,
+        cameraVisible: _cameraVisible || cameraVisible,
         cameraOffContent: _cameraOffContent || cameraOffContent,
         backgroundContent: _backgroundContent || backgroundContent,
         micContent: _micContent || micContent,
@@ -79,6 +82,7 @@ export const DEFAULT_TEMPLATE = ({
 export const VIDEO_TEMPLATE = ({
   cameraContent,
   cameraId,
+  cameraVisible = true,
   cameraOffContent,
   backgroundContent,
   micId,
@@ -96,8 +100,8 @@ export const VIDEO_TEMPLATE = ({
           z: 2,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: cameraVisible,
         content: cameraContent,
       },
       {
@@ -109,8 +113,8 @@ export const VIDEO_TEMPLATE = ({
           z: 1,
           w: 'CANVAS_WIDTH * 0.25',
           h: 'CANVAS_HEIGHT * 0.25',
-          visible: true,
         },
+        visible: true,
         content: cameraOffContent,
       },
       {
@@ -122,8 +126,8 @@ export const VIDEO_TEMPLATE = ({
           z: 0,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: true,
         content: backgroundContent,
       },
     ],
@@ -136,6 +140,7 @@ export const VIDEO_TEMPLATE = ({
     update: ({
       cameraContent: _cameraContent,
       cameraId: _cameraId,
+      cameraVisible: _cameraVisible,
       cameraOffContent: _cameraOffContent,
       backgroundContent: _backgroundContent,
       micId: _micId,
@@ -144,6 +149,7 @@ export const VIDEO_TEMPLATE = ({
       const newProps = {
         cameraContent: _cameraContent || cameraContent,
         cameraId: _cameraId || cameraId,
+        cameraVisible: _cameraVisible || cameraVisible,
         cameraOffContent: _cameraOffContent || cameraOffContent,
         backgroundContent: _backgroundContent || backgroundContent,
         micContent: _micContent || micContent,
@@ -157,6 +163,7 @@ export const VIDEO_TEMPLATE = ({
 export const SCREENSHARE_TEMPLATE = ({
   cameraContent,
   cameraId,
+  cameraVisible = true,
   screenShareContent,
   screenShareId,
   cameraOffContent,
@@ -178,8 +185,8 @@ export const SCREENSHARE_TEMPLATE = ({
           z: 4,
           w: 'CANVAS_WIDTH * 0.2',
           h: 'CANVAS_HEIGHT * 0.2',
-          visible: true,
         },
+        visible: cameraVisible,
         content: cameraContent,
       },
       {
@@ -191,8 +198,8 @@ export const SCREENSHARE_TEMPLATE = ({
           z: 2,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: true,
         content: screenShareContent,
       },
       {
@@ -204,8 +211,8 @@ export const SCREENSHARE_TEMPLATE = ({
           z: 0,
           w: 'CANVAS_WIDTH',
           h: 'CANVAS_HEIGHT',
-          visible: true,
         },
+        visible: true,
         content: backgroundContent,
       },
     ],

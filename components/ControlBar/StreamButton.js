@@ -25,7 +25,7 @@ export function StreamButton({
       <span className='max-sm:hidden'>{buttonContent}</span>
       <span className='sm:hidden inline-flex items-center'>
         <Icon>
-          <SignalIcon />
+          <SignalIcon className='text-inherit' />
         </Icon>
       </span>
     </Button>

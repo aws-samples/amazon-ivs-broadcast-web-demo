@@ -1,4 +1,3 @@
-import styles from './Select.module.css';
 import { useState, Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import {
@@ -8,8 +7,6 @@ import {
 } from '@heroicons/react/20/solid';
 import Icon from '../Icon';
 import Tooltip from '../Tooltip';
-import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
 
 export default function Select({
   hint,
@@ -22,9 +19,6 @@ export default function Select({
     (option) => option.value === defaultValue.toString()
   );
   const [value, setValue] = useState(defaultOption);
-
-  console.log('🚀 ~ file: Select.js:17 ~ value:', value);
-  console.log('🚀 ~ file: Select.js:13 ~ disabled:', disabled);
 
   const handleChange = (option) => {
     onChange(option);
@@ -114,23 +108,4 @@ export default function Select({
       )}
     </div>
   );
-}
-
-{
-  /* 
-    <select
-      onChange={}
-      className={styles.select}
-      value={value}
-      {...selectProps}
-    >
-      {options.map((item, i) => (
-        <option
-          key={`${i}-${item.value}`}
-          value={`${item.value}`}
-          disabled={item.disabled || false}
-        >{`${item.label}`}</option>
-      ))}
-    </select>;
-  */
 }

@@ -6,10 +6,7 @@ import {
 } from '@/utils/BroadcastLayoutTemplates';
 import { BroadcastContext } from '@/providers/BroadcastContext';
 import { UserSettingsContext } from '@/providers/UserSettingsContext';
-import {
-  formatPositionFromDimensions,
-  compareArrays,
-} from '@/utils/BroadcastLayout';
+import { formatPositionFromDimensions } from '@/utils/BroadcastLayout';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import { BroadcastMixerContext } from '@/providers/BroadcastMixerContext';
 import toast from 'react-hot-toast';
@@ -19,6 +16,7 @@ const useBroadcastLayout = () => {
     useContext(BroadcastContext);
   const {
     canvasElemRef,
+    localVideoStreamRef,
     localAudioStreamRef,
     startScreenShare,
     stopScreenShare,
@@ -41,8 +39,10 @@ const useBroadcastLayout = () => {
 
   const toggleCamVisiblity = (cameraId) => {
     const currentCam = broadcastClientRef.current.getVideoInputDevice(cameraId);
+    const currentVideoTrack = localVideoStreamRef.current.getVideoTracks()[0];
     setCamActive((prevState) => {
       const nextState = !prevState;
+      currentVideoTrack.enabled = nextState;
       currentCam.render = nextState;
       toast.success(`${nextState ? 'Camera shown' : 'Camera hidden'}`, {
         id: 'CAMERA_STATE',
@@ -57,6 +57,7 @@ const useBroadcastLayout = () => {
     showFullScreenCam({
       cameraStream: canvasElemRef.current,
       cameraId: localVideoDeviceId,
+      cameraVisible: camActive,
       micStream: localAudioStreamRef.current,
       micId: localAudioDeviceId,
     });
@@ -85,6 +86,7 @@ const useBroadcastLayout = () => {
       showScreenShare({
         cameraStream: canvasElemRef.current,
         cameraId: localVideoDeviceId,
+        cameraVisible: camActive,
         micStream: localAudioStreamRef.current,
         micId: localAudioDeviceId,
         screenShareStream: captureStream,
@@ -149,7 +151,7 @@ const useBroadcastLayout = () => {
     });
   };
 
-  const addImageLayer = async ({ imageSrc, name, position }) => {
+  const addImageLayer = async ({ imageSrc, name, position, visible }) => {
     if (layerExists(name)) removeImageLayer({ name });
 
     const img = new Image();
@@ -163,7 +165,7 @@ const useBroadcastLayout = () => {
     }
   };
 
-  const addVideoLayer = async ({ videoElem, name, position }) => {
+  const addVideoLayer = async ({ videoElem, name, position, visible }) => {
     if (layerExists(name)) removeImageLayer({ name });
     try {
       await broadcastClientRef.current.addImageSource(
@@ -171,6 +173,11 @@ const useBroadcastLayout = () => {
         name,
         position
       );
+      if (!visible) {
+        const addedDevice =
+          await broadcastClientRef.current.getVideoInputDevice(name);
+        addedDevice.render = false;
+      }
       addLayerToRef({ name, type: 'video' });
     } catch (err) {
       console.error(err);
@@ -194,22 +201,28 @@ const useBroadcastLayout = () => {
     }
   };
 
-  const addOrUpdateDeviceLayer = async ({ deviceStream, name, position }) => {
+  const addOrUpdateDeviceLayer = async ({
+    deviceStream,
+    name,
+    position,
+    visible,
+  }) => {
     if (layerExists(name)) {
-      await updateDeviceLayer({ name, position });
+      await updateDeviceLayer({ name, position, visible });
     } else {
-      await addDeviceLayer({ deviceStream, name, position });
+      await addDeviceLayer({ deviceStream, name, position, visible });
     }
   };
 
-  const addDeviceLayer = async ({ deviceStream, name, position }) => {
+  const addDeviceLayer = async ({ deviceStream, name, position, visible }) => {
     try {
       await broadcastClientRef.current.addVideoInputDevice(
         deviceStream,
         name,
         position
       );
-      addLayerToRef({ name, type: 'device' });
+
+      addLayerToRef({ name, type: 'device', visible });
     } catch (err) {
       console.error(err);
     }
@@ -240,16 +253,27 @@ const useBroadcastLayout = () => {
     }
   };
 
-  const addLayerFromSlot = async ({ type, content, name, position }) => {
+  const addLayerFromSlot = async ({
+    type,
+    content,
+    name,
+    position,
+    visible,
+  }) => {
     switch (type) {
       case 'device':
-        await addOrUpdateDeviceLayer({ deviceStream: content, name, position });
+        await addOrUpdateDeviceLayer({
+          deviceStream: content,
+          name,
+          position,
+          visible,
+        });
         break;
       case 'video':
-        await addVideoLayer({ videoElem: content, name, position });
+        await addVideoLayer({ videoElem: content, name, position, visible });
         break;
       case 'image':
-        await addImageLayer({ imageSrc: content, name, position });
+        await addImageLayer({ imageSrc: content, name, position, visible });
         break;
       default:
         break;
@@ -261,13 +285,15 @@ const useBroadcastLayout = () => {
     const promises = [];
 
     for (const slot of slots) {
-      const { name, type, dimensions, content } = slot;
+      const { name, type, dimensions, visible, content } = slot;
       const position = formatPositionFromDimensions({
         dimensions,
         baseCanvasSize: broadcastClientRef.current.getCanvasDimensions(),
       });
 
-      promises.push(addLayerFromSlot({ type, content, name, position }));
+      promises.push(
+        addLayerFromSlot({ type, content, name, position, visible })
+      );
     }
 
     await Promise.allSettled(promises);
@@ -344,6 +370,7 @@ const useBroadcastLayout = () => {
   const showScreenShare = async ({
     cameraStream,
     cameraId,
+    cameraVisible = true,
     micStream,
     micId,
     screenShareStream,
@@ -354,6 +381,7 @@ const useBroadcastLayout = () => {
     const screenShareScene = SCREENSHARE_TEMPLATE({
       cameraContent: cameraStream,
       cameraId: cameraId,
+      cameraVisible: cameraVisible,
       screenShareContent: screenShareStream,
       screenShareId: screenShareId,
       cameraOffContent: '/assets/camera-off.png',
@@ -370,6 +398,7 @@ const useBroadcastLayout = () => {
   const showFullScreenCam = async ({
     cameraStream,
     cameraId,
+    cameraVisible = true,
     micStream,
     micId,
   }) => {
@@ -384,6 +413,7 @@ const useBroadcastLayout = () => {
     const fullScreenCam = VIDEO_TEMPLATE({
       cameraContent: cameraStream,
       cameraId: cameraId,
+      cameraVisible: cameraVisible,
       cameraOffContent: '/assets/camera-off.png',
       backgroundContent: '/assets/camera-bg.png',
       micContent: micStream,

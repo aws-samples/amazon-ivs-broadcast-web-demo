@@ -59,7 +59,6 @@ const useBroadcastSDK = () => {
   };
 
   const attachBroadcastClientListeners = (client) => {
-    console.log('attaching client listeners');
     client.on(
       broadcastClientEventsRef.current.CONNECTION_STATE_CHANGE,
       handleConnectionStateChange
@@ -96,26 +95,14 @@ const useBroadcastSDK = () => {
   };
 
   const handleActiveStateChange = (active) => {
-    console.log(
-      '🚀 ~ file: useBroadcastSDK.js:92 ~ handleActiveStateChange ~ active:',
-      active
-    );
     setIsLive(active);
   };
 
   const handleConnectionStateChange = (state) => {
-    console.log(
-      '🚀 ~ file: useBroadcastSDK.js:101 ~ handleConnectionStateChange ~ state:',
-      state
-    );
     setConnectionState(state);
   };
 
   const handleClientError = (clientError) => {
-    console.log(
-      '🚀 ~ file: useBroadcastSDK.js:106 ~ handleClientError ~ clientError:',
-      clientError
-    );
     setClientErrors((prevState) => [...prevState, clientError]);
   };
 

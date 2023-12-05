@@ -17,7 +17,6 @@ const useBroadcastMixer = () => {
   };
 
   const addMixerDevices = async (devices) => {
-    console.log('🚀 ~ Adding devices:', devices);
     const promises = [];
 
     for (const { audioStream, deviceName } of devices) {
@@ -27,7 +26,6 @@ const useBroadcastMixer = () => {
   };
 
   const removeAllDevices = async (devices = mixerRef.current) => {
-    console.log('🚀 ~ Removing devices:', devices);
     const promises = [];
 
     for (const { deviceName } of devices) {
@@ -48,11 +46,6 @@ const useBroadcastMixer = () => {
         devicesToRemove.push(oldDevice);
       }
     });
-
-    console.log(
-      '🚀 ~ file: useBroadcastMixer.js:41 ~ removeOldDevices ~ devicesToRemove:',
-      devicesToRemove
-    );
     await removeAllDevices(devicesToRemove);
   };
 
@@ -78,7 +71,6 @@ const useBroadcastMixer = () => {
 
   const addMixerDevice = async ({ audioStream, deviceName }) => {
     if (deviceExists(deviceName)) {
-      console.log('Device already exists:', deviceName);
       return;
     }
     try {
