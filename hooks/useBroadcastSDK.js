@@ -13,6 +13,7 @@ const useBroadcastSDK = () => {
 
   const [broadcastClientMounted, setBroadcastClientMounted] = useState(false);
   const [isLive, setIsLive] = useState(false);
+  const [isSupported, setIsSupported] = useState(true);
   const [streamPending, setStreamPending] = useState(false);
   const [connectionState, setConnectionState] = useState();
   const [clientErrors, setClientErrors] = useState([]);
@@ -44,6 +45,7 @@ const useBroadcastSDK = () => {
 
     broadcastClientRef.current = client;
     sdkVersionRef.current = IVSBroadcastClient.__version;
+    setIsSupported(IVSBroadcastClient.isSupported());
     attachBroadcastClientListeners(client);
 
     // Hack to get fix react state update issue
@@ -126,6 +128,8 @@ const useBroadcastSDK = () => {
 
   const startStream = async ({ client, streamKey }) => {
     var streamTimeout;
+    console.log(client);
+    console.log(streamKey);
 
     try {
       toast.loading(
@@ -239,6 +243,7 @@ const useBroadcastSDK = () => {
     broadcastClientRef,
     connectionState,
     isLive,
+    isSupported,
     streamPending,
     broadcastStartTimeRef: startTimeRef,
     broadcastErrors: clientErrors,

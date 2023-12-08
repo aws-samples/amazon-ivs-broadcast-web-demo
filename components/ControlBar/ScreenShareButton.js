@@ -16,9 +16,9 @@ export function ScreenShareButton({
     >
       <Icon>
         {active ? (
-          <ScreenShareSlashIcon className='text-current' />
+          <ScreenShareSlashIcon className='text-current h-6 w-6' />
         ) : (
-          <ScreenShareIcon className='text-current' />
+          <ScreenShareIcon className='text-current h-6 w-6' />
         )}
       </Icon>
     </Button>

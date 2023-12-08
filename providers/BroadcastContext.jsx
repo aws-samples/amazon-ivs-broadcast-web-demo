@@ -32,7 +32,7 @@ const BroadcastContext = createContext({
 function BroadcastProvider({ children }) {
   const state = useBroadcastSDK();
 
-  const isSupported = isDesktop && (isFirefox || isChrome);
+  // const isSupported = isDesktop && (isFirefox || isChrome);
 
   // useEffect(() => {
   //   if (state.isLive) {
@@ -43,7 +43,7 @@ function BroadcastProvider({ children }) {
   // }, [state.isLive]);
 
   return (
-    <BroadcastContext.Provider value={{ isSupported, ...state }}>
+    <BroadcastContext.Provider value={state}>
       {children}
     </BroadcastContext.Provider>
   );

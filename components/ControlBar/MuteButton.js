@@ -13,11 +13,11 @@ export function MuteButton({ muted, handleMicMute, ...additionalProps }) {
     >
       {!muted ? (
         <Icon>
-          <MicrophoneIcon className='text-inherit' />
+          <MicrophoneIcon className='text-inherit h-6 w-6' />
         </Icon>
       ) : (
         <Icon>
-          <MicrophoneSlashIcon className='text-inherit' />
+          <MicrophoneSlashIcon className='text-inherit h-6 w-6' />
         </Icon>
       )}
     </Button>

@@ -44,7 +44,7 @@ export default function StreamPreview({ previewRef }) {
               <div className='absolute inset-0 w-full h-full bg-surfaceAlt flex items-center justify-center'>
                 <div className='max-w-xs flex flex-col gap-4 items-center justify-center text-center'>
                   <Icon size={'lg'}>
-                    <HandRaisedIcon className='w-full' />
+                    <HandRaisedIcon className='w-full text-uiText' />
                   </Icon>
                   <span className='text-uiText/75'>
                     To start streaming, allow access to your camera and

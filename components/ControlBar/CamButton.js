@@ -14,11 +14,11 @@ export function CamButton({ muted, handleCameraMute, ...additionalProps }) {
     >
       {!muted ? (
         <Icon>
-          <VideoCameraIcon className='text-inherit' />
+          <VideoCameraIcon className='text-inherit h-6 w-6' />
         </Icon>
       ) : (
         <Icon>
-          <VideoCameraSlashIcon className='text-inherit' />
+          <VideoCameraSlashIcon className='text-inherit h-6 w-6' />
         </Icon>
       )}
     </Button>

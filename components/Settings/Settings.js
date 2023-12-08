@@ -363,9 +363,9 @@ export default function Settings() {
             </fieldset>
             <div className='flex mt-2 p-4 gap-2 rounded-md bg-primary/10 border border-primary/20'>
               <Icon>
-                <InformationCircleIcon />
+                <InformationCircleIcon className='text-current w-5 h-5' />
               </Icon>
-              <p className='text-sm inline-block text-uiText mt-1'>
+              <p className='text-sm inline-block text-uiText mt-px'>
                 The ingest endpoint, stream key, and channel type can be found
                 in the{' '}
                 <a

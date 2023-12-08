@@ -10,7 +10,9 @@ import Modal from '@/components/Modal';
 import { UserSettingsContext } from '@/providers/UserSettingsContext';
 import { BroadcastLayoutContext } from '@/providers/BroadcastLayoutContext';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
-import CameraCanvas from '../CameraCanvas/CameraCanvas';
+import CameraCanvas from '@/components/CameraCanvas/CameraCanvas';
+import toast from 'react-hot-toast';
+import Button from '@/components/Button';
 
 export default function BroadcastApp() {
   const searchParams = useSearchParams();
@@ -19,6 +21,7 @@ export default function BroadcastApp() {
     useContext(ModalContext);
   const { showFullScreenCam } = useContext(BroadcastLayoutContext);
   const {
+    isSupported,
     broadcastClientRef,
     createBroadcastClient,
     destroyBroadcastClient,
@@ -109,6 +112,35 @@ export default function BroadcastApp() {
     setCanvasHeight(height);
     setVideoStream(localVideoStreamRef.current);
   }, [localVideoDeviceId, broadcastClientMounted]);
+
+  useEffect(() => {
+    if (!isSupported) {
+      toast.error(
+        (t) => {
+          return (
+            <div className='flex items-center'>
+              <span className='pr-4 grow'>
+                This browser is not fully supported. Certain features may not
+                work as expected.{' '}
+                <a
+                  href=''
+                  target='_blank'
+                  rel='noreferrer noopener'
+                  className='text-primaryAlt dark-theme:text-primary hover:text-primary hover:dark-theme:text-primaryAlt hover:underline underline-offset-1'
+                >
+                  Learn more
+                </a>
+              </span>
+            </div>
+          );
+        },
+        {
+          id: 'BROWSER_SUPPORT',
+          duration: Infinity,
+        }
+      );
+    }
+  }, [isSupported]);
 
   return (
     <>

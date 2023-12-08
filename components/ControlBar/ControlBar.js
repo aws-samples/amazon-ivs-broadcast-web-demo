@@ -140,7 +140,7 @@ export default function ControlBar() {
         <Tooltip hAlign='right' content='About this tool' persist={true}>
           <Button type={'base'} style='round' onClick={handleAboutClick}>
             <Icon>
-              <InformationCircleIcon className='text-inherit' />
+              <InformationCircleIcon className='text-inherit h-6 w-6' />
             </Icon>
           </Button>
         </Tooltip>

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import BroadcastApp from '@/components/BroadcastApp';
+import dynamic from 'next/dynamic';
 import LocalMediaProvider from '@/providers/LocalMediaContext';
 import BroadcastProvider from '@/providers/BroadcastContext';
 import UserSettingsProvider from '@/providers/UserSettingsContext';
@@ -7,7 +7,9 @@ import ModalProvider from '@/providers/ModalContext';
 import BroadcastLayoutProvider from '@/providers/BroadcastLayoutContext';
 import BroadcastMixerProvider from '@/providers/BroadcastMixerContext';
 
-// const BroadcastApp = dynamic(() => import('@/components/BroadcastApp'));
+const BroadcastApp = dynamic(() => import('@/components/BroadcastApp'), {
+  ssr: false,
+});
 
 const CAM_LAYER_NAME = 'camera';
 const MIC_LAYER_NAME = 'mic';
