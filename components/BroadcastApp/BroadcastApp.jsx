@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import ToastBar from '@/components/ToastBar';
+import ToasterBar from '@/components/ToasterBar';
 import StatusBar from '@/components/StatusBar';
 import StreamPreview from '@/components/StreamPreview';
 import ControlBar from '@/components/ControlBar';
@@ -12,7 +12,6 @@ import { BroadcastLayoutContext } from '@/providers/BroadcastLayoutContext';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import CameraCanvas from '@/components/CameraCanvas/CameraCanvas';
 import toast from 'react-hot-toast';
-import Button from '@/components/Button';
 
 export default function BroadcastApp() {
   const searchParams = useSearchParams();
@@ -35,6 +34,8 @@ export default function BroadcastApp() {
     localVideoStreamRef,
     canvasElemRef,
     cleanUpDevices,
+    enableCanvasCamera,
+    setEnableCanvasCamera,
   } = useContext(LocalMediaContext);
 
   const previewRef = useRef(undefined);
@@ -53,9 +54,13 @@ export default function BroadcastApp() {
             config: configRef.current,
             ingestEndpoint,
           }).then((client) => {
+            const { width, height } = videoStream.getTracks()[0].getSettings();
             showFullScreenCam({
-              cameraStream: canvasElemRef.current,
+              cameraStream: enableCanvasCamera
+                ? canvasElemRef.current
+                : videoStream,
               cameraId: videoDeviceId,
+              cameraIsCanvas: enableCanvasCamera,
               micStream: audioStream,
               micId: audioDeviceId,
             });
@@ -145,15 +150,17 @@ export default function BroadcastApp() {
   return (
     <>
       <div className='flex flex-col h-[100dvh] items-center bg-surface'>
-        <ToastBar />
+        <ToasterBar />
         <StatusBar />
         <StreamPreview previewRef={previewRef} />
         <ControlBar />
-        <CameraCanvas
-          width={canvasWidth}
-          height={canvasHeight}
-          videoStream={videoStream}
-        />
+        {enableCanvasCamera && (
+          <CameraCanvas
+            width={canvasWidth}
+            height={canvasHeight}
+            videoStream={videoStream}
+          />
+        )}
       </div>
       <Modal show={modalActive} onClose={toggleModal} {...modalProps}>
         {modalContent}

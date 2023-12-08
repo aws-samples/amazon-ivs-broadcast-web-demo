@@ -5,7 +5,10 @@ import {
   VIDEO_TEMPLATE,
 } from '@/utils/BroadcastLayoutTemplates';
 import { BroadcastContext } from '@/providers/BroadcastContext';
-import { formatPositionFromDimensions } from '@/utils/BroadcastLayout';
+import {
+  calcScaledCoords,
+  formatPositionFromDimensions,
+} from '@/utils/BroadcastLayout';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import { BroadcastMixerContext } from '@/providers/BroadcastMixerContext';
 import toast from 'react-hot-toast';
@@ -22,6 +25,7 @@ const useBroadcastLayout = () => {
     localVideoDeviceId,
     localAudioDeviceId,
     localScreenShareStreamRef,
+    enableCanvasCamera,
   } = useContext(LocalMediaContext);
   const {
     mixerDevicesRef,
@@ -53,8 +57,11 @@ const useBroadcastLayout = () => {
   const stopScreenSharing = async () => {
     await stopScreenShare();
     removeMixerDevice(localScreenShareStreamRef.current.id);
+    const cameraContent = enableCanvasCamera
+      ? canvasElemRef.current
+      : localVideoStreamRef.current;
     showFullScreenCam({
-      cameraStream: canvasElemRef.current,
+      cameraStream: cameraContent,
       cameraId: localVideoDeviceId,
       cameraVisible: camActive,
       micStream: localAudioStreamRef.current,
@@ -82,10 +89,14 @@ const useBroadcastLayout = () => {
         deviceName: captureStream.id,
       });
     if (screenTrack || audioTrack) {
+      const cameraContent = enableCanvasCamera
+        ? canvasElemRef.current
+        : localVideoStreamRef.current;
       showScreenShare({
-        cameraStream: canvasElemRef.current,
+        cameraStream: cameraContent,
         cameraId: localVideoDeviceId,
         cameraVisible: camActive,
+        cameraIsCanvas: enableCanvasCamera,
         micStream: localAudioStreamRef.current,
         micId: localAudioDeviceId,
         screenShareStream: captureStream,
@@ -284,10 +295,26 @@ const useBroadcastLayout = () => {
     const promises = [];
 
     for (const slot of slots) {
-      const { name, type, dimensions, visible, content } = slot;
+      const { name, type, dimensions, visible, content, resize } = slot;
+      const baseCanvasSize = broadcastClientRef.current.getCanvasDimensions();
+
+      let calculatedDimensions = dimensions;
+      if (resize) {
+        if (resize.mode === 'FILL') {
+          const { width, height } = resize.naturalSize;
+          calculatedDimensions = calcScaledCoords(
+            width,
+            height,
+            baseCanvasSize.width,
+            baseCanvasSize.height
+          );
+          calculatedDimensions.z = dimensions.z;
+        }
+      }
+
       const position = formatPositionFromDimensions({
-        dimensions,
-        baseCanvasSize: broadcastClientRef.current.getCanvasDimensions(),
+        dimensions: calculatedDimensions,
+        baseCanvasSize,
       });
 
       promises.push(
@@ -370,6 +397,7 @@ const useBroadcastLayout = () => {
     cameraStream,
     cameraId,
     cameraVisible = true,
+    cameraIsCanvas = false,
     micStream,
     micId,
     screenShareStream,
@@ -381,6 +409,7 @@ const useBroadcastLayout = () => {
       cameraContent: cameraStream,
       cameraId: cameraId,
       cameraVisible: cameraVisible,
+      cameraIsCanvas: cameraIsCanvas,
       screenShareContent: screenShareStream,
       screenShareId: screenShareId,
       cameraOffContent: '/assets/camera-off.png',
@@ -398,21 +427,24 @@ const useBroadcastLayout = () => {
     cameraStream,
     cameraId,
     cameraVisible = true,
+    cameraIsCanvas,
     micStream,
     micId,
   }) => {
-    // const fullScreenCam = DEFAULT_TEMPLATE({
-    //   cameraContent: cameraStream,
-    //   cameraId: cameraId,
-    //   cameraOffContent: '/assets/camera-off.png',
-    //   backgroundContent: '/assets/camera-bg.png',
-    //   micContent: micStream,
-    //   micId: micId,
-    // });
-    const fullScreenCam = VIDEO_TEMPLATE({
+    let cameraResize = undefined;
+    if (!cameraIsCanvas) {
+      const { width, height } = cameraStream.getTracks()[0].getSettings();
+      cameraResize = {
+        mode: 'FILL',
+        naturalSize: { width, height },
+      };
+    }
+    const fullScreenCam = DEFAULT_TEMPLATE({
       cameraContent: cameraStream,
       cameraId: cameraId,
       cameraVisible: cameraVisible,
+      cameraIsCanvas: cameraIsCanvas,
+      cameraResize: cameraResize,
       cameraOffContent: '/assets/camera-off.png',
       backgroundContent: '/assets/camera-bg.png',
       micContent: micStream,

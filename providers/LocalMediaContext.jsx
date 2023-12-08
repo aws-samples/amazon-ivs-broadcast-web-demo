@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 import useLocalMedia from '@/hooks/useLocalMedia.js';
 
 const LocalMediaContext = createContext({
@@ -16,6 +16,8 @@ const LocalMediaContext = createContext({
   videoElemRef: undefined,
   canvasElemRef: undefined,
   localScreenShareStreamRef: undefined,
+  enableCanvasCamera: undefined,
+  setEnableCanvasCamera: undefined,
   updateLocalAudio: undefined,
   updateLocalVideo: undefined,
   setInitialDevices: undefined,
@@ -42,6 +44,8 @@ function LocalMediaProvider({ children }) {
     videoElemRef,
     canvasElemRef,
     localScreenShareStreamRef,
+    enableCanvasCamera,
+    setEnableCanvasCamera,
     updateLocalAudio,
     updateLocalVideo,
     setInitialDevices,
@@ -53,7 +57,35 @@ function LocalMediaProvider({ children }) {
     stopScreenShare,
   } = useLocalMedia();
 
-  const state = {
+  const state = useMemo(() => {
+    return {
+      permissions,
+      localVideoMounted,
+      localAudioMounted,
+      audioDevices,
+      videoDevices,
+      localAudioStreamRef,
+      localVideoStreamRef,
+      localAudioDeviceIdRef,
+      localVideoDeviceIdRef,
+      localAudioDeviceId,
+      localVideoDeviceId,
+      videoElemRef,
+      canvasElemRef,
+      localScreenShareStreamRef,
+      enableCanvasCamera,
+      setEnableCanvasCamera,
+      updateLocalAudio,
+      updateLocalVideo,
+      setInitialDevices,
+      cleanUpDevices,
+      refreshDevices,
+      setAudioDevices,
+      setVideoDevices,
+      startScreenShare,
+      stopScreenShare,
+    };
+  }, [
     permissions,
     localVideoMounted,
     localAudioMounted,
@@ -77,7 +109,7 @@ function LocalMediaProvider({ children }) {
     setVideoDevices,
     startScreenShare,
     stopScreenShare,
-  };
+  ]);
 
   return (
     <LocalMediaContext.Provider value={state}>

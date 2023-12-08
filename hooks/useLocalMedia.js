@@ -29,6 +29,7 @@ function useLocalMedia() {
   const [videoDevices, setVideoDevices] = useState([]);
   const [localVideoMounted, setLocalVideoMounted] = useState(false);
   const [localAudioMounted, setLocalAudioMounted] = useState(false);
+  const [enableCanvasCamera, setEnableCanvasCamera] = useState(false);
 
   const [savedAudioDeviceId, setSavedAudioDeviceId] = useLocalStorage(
     'savedAudioDeviceId',
@@ -264,6 +265,8 @@ function useLocalMedia() {
     videoElemRef,
     canvasElemRef,
     localScreenShareStreamRef: localScreenShareRef,
+    enableCanvasCamera,
+    setEnableCanvasCamera,
     updateLocalAudio,
     updateLocalVideo,
     setInitialDevices,

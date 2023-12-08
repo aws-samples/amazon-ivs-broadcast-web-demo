@@ -1,14 +1,23 @@
 import { Parser } from 'expr-eval';
 
-export function formatPositionFromDimensions({ dimensions, baseCanvasSize }) {
-  let formattedDimensions = formatDimensions({
-    dimensions,
-    baseCanvasSize,
-  });
-  return formattedDimensions;
+export function calcScaledCoords(
+  itemWidth,
+  itemHeight,
+  containerWidth,
+  containerHeight
+) {
+  // get the scale
+  var scale = Math.max(
+    containerWidth / itemWidth,
+    containerHeight / itemHeight
+  );
+  // get the top left position of the image
+  var x = containerWidth / 2 - (itemWidth / 2) * scale;
+  var y = containerHeight / 2 - (itemHeight / 2) * scale;
+  return { x, y, w: itemWidth * scale, h: itemHeight * scale };
 }
 
-export function formatDimensions({ dimensions, baseCanvasSize }) {
+export function formatPositionFromDimensions({ dimensions, baseCanvasSize }) {
   const parser = new Parser();
   const dimensionsArr = Object.entries(dimensions);
 

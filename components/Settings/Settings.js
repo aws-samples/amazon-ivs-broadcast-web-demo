@@ -52,6 +52,7 @@ export default function Settings() {
     localAudioDeviceId,
     updateLocalAudio,
     updateLocalVideo,
+    enableCanvasCamera,
   } = useContext(LocalMediaContext);
   const { restartBroadcastClient, isLive } = useContext(BroadcastContext);
   const { setMicMuted } = useContext(BroadcastMixerContext);
@@ -108,9 +109,10 @@ export default function Settings() {
     // updating other settings
     let clientUpdateRequired = false;
     let sceneRefreshRequired = false;
+    let _videoStream = undefined;
 
     if (_videoDevice !== savedVideoDeviceId) {
-      await updateLocalVideo(_videoDevice);
+      _videoStream = await updateLocalVideo(_videoDevice);
       setSavedVideoDeviceId(_videoDevice);
       setCamActive(true);
       sceneRefreshRequired = true;
@@ -170,7 +172,9 @@ export default function Settings() {
     }
     if (sceneRefreshRequired) {
       await refreshCurrentScene({
-        cameraContent: canvasElemRef.current,
+        cameraContent: enableCanvasCamera
+          ? canvasElemRef.current
+          : _videoStream,
         cameraId: _videoDevice,
         micContent: localAudioStreamRef.current,
         micId: _audioDevice,

@@ -2,6 +2,8 @@ export const DEFAULT_TEMPLATE = ({
   cameraContent,
   cameraId,
   cameraVisible = true,
+  cameraIsCanvas = false,
+  cameraResize = undefined,
   cameraOffContent,
   backgroundContent,
   micId,
@@ -12,7 +14,7 @@ export const DEFAULT_TEMPLATE = ({
     slots: [
       {
         name: cameraId,
-        type: 'device',
+        type: cameraIsCanvas ? 'video' : 'device',
         dimensions: {
           x: 0,
           y: 0,
@@ -21,6 +23,7 @@ export const DEFAULT_TEMPLATE = ({
           h: 'CANVAS_HEIGHT',
         },
         visible: cameraVisible,
+        resize: cameraResize,
         content: cameraContent,
       },
       {
@@ -60,6 +63,8 @@ export const DEFAULT_TEMPLATE = ({
       cameraContent: _cameraContent,
       cameraId: _cameraId,
       cameraVisible: _cameraVisible,
+      cameraIsCanvas: _cameraIsCanvas,
+      cameraResize: _cameraResize,
       cameraOffContent: _cameraOffContent,
       backgroundContent: _backgroundContent,
       micId: _micId,
@@ -69,6 +74,8 @@ export const DEFAULT_TEMPLATE = ({
         cameraContent: _cameraContent || cameraContent,
         cameraId: _cameraId || cameraId,
         cameraVisible: _cameraVisible || cameraVisible,
+        cameraResize: _cameraResize || cameraResize,
+        cameraIsCanvas: _cameraIsCanvas || cameraIsCanvas,
         cameraOffContent: _cameraOffContent || cameraOffContent,
         backgroundContent: _backgroundContent || backgroundContent,
         micContent: _micContent || micContent,
@@ -79,91 +86,11 @@ export const DEFAULT_TEMPLATE = ({
   };
 };
 
-export const VIDEO_TEMPLATE = ({
-  cameraContent,
-  cameraId,
-  cameraVisible = true,
-  cameraOffContent,
-  backgroundContent,
-  micId,
-  micContent,
-}) => {
-  return {
-    name: 'videoTemplate',
-    slots: [
-      {
-        name: cameraId,
-        type: 'video',
-        dimensions: {
-          x: 0,
-          y: 0,
-          z: 2,
-          w: 'CANVAS_WIDTH',
-          h: 'CANVAS_HEIGHT',
-        },
-        visible: cameraVisible,
-        content: cameraContent,
-      },
-      {
-        name: 'cameraHiddenIcon',
-        type: 'image',
-        dimensions: {
-          x: 'CANVAS_WIDTH * 0.5 - LAYER_WIDTH * 0.5',
-          y: 'CANVAS_HEIGHT * 0.5 - LAYER_HEIGHT * 0.5',
-          z: 1,
-          w: 'CANVAS_WIDTH * 0.25',
-          h: 'CANVAS_HEIGHT * 0.25',
-        },
-        visible: true,
-        content: cameraOffContent,
-      },
-      {
-        name: 'background',
-        type: 'image',
-        dimensions: {
-          x: 0,
-          y: 0,
-          z: 0,
-          w: 'CANVAS_WIDTH',
-          h: 'CANVAS_HEIGHT',
-        },
-        visible: true,
-        content: backgroundContent,
-      },
-    ],
-    mixer: [
-      {
-        deviceName: micId,
-        audioStream: micContent,
-      },
-    ],
-    update: ({
-      cameraContent: _cameraContent,
-      cameraId: _cameraId,
-      cameraVisible: _cameraVisible,
-      cameraOffContent: _cameraOffContent,
-      backgroundContent: _backgroundContent,
-      micId: _micId,
-      micContent: _micContent,
-    }) => {
-      const newProps = {
-        cameraContent: _cameraContent || cameraContent,
-        cameraId: _cameraId || cameraId,
-        cameraVisible: _cameraVisible || cameraVisible,
-        cameraOffContent: _cameraOffContent || cameraOffContent,
-        backgroundContent: _backgroundContent || backgroundContent,
-        micContent: _micContent || micContent,
-        micId: _micId || micId,
-      };
-      return VIDEO_TEMPLATE(newProps);
-    },
-  };
-};
-
 export const SCREENSHARE_TEMPLATE = ({
   cameraContent,
   cameraId,
   cameraVisible = true,
+  cameraIsCanvas = false,
   screenShareContent,
   screenShareId,
   cameraOffContent,
@@ -178,7 +105,7 @@ export const SCREENSHARE_TEMPLATE = ({
     slots: [
       {
         name: cameraId,
-        type: 'video',
+        type: cameraIsCanvas ? 'video' : 'device',
         dimensions: {
           x: '20',
           y: 'CANVAS_HEIGHT - LAYER_HEIGHT - 20',
@@ -229,6 +156,7 @@ export const SCREENSHARE_TEMPLATE = ({
     update: ({
       cameraContent: _cameraContent,
       cameraId: _cameraId,
+      cameraIsCanvas: _cameraIsCanvas,
       screenShareContent: _screenShareContent,
       screenShareId: _screenShareId,
       cameraOffContent: _cameraOffContent,
@@ -241,6 +169,7 @@ export const SCREENSHARE_TEMPLATE = ({
       const newProps = {
         cameraContent: _cameraContent || cameraContent,
         cameraId: _cameraId || cameraId,
+        cameraIsCanvas: _cameraIsCanvas || cameraIsCanvas,
         screenShareContent: _screenShareContent || screenShareContent,
         screenShareId: _screenShareId || screenShareId,
         cameraOffContent: _cameraOffContent || cameraOffContent,

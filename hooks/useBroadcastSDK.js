@@ -7,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const useBroadcastSDK = () => {
-  const { streamKey } = useContext(UserSettingsContext);
+  const { streamKey, ingestEndpoint } = useContext(UserSettingsContext);
   const { toggleModal, setModalProps, setModalContent } =
     useContext(ModalContext);
 
@@ -126,10 +126,8 @@ const useBroadcastSDK = () => {
     }
   };
 
-  const startStream = async ({ client, streamKey }) => {
+  const startStream = async ({ client, streamKey, ingestEndpoint }) => {
     var streamTimeout;
-    console.log(client);
-    console.log(streamKey);
 
     try {
       toast.loading(
@@ -167,7 +165,7 @@ const useBroadcastSDK = () => {
         );
       }, 5000);
 
-      await client.startBroadcast(streamKey);
+      await client.startBroadcast(streamKey, ingestEndpoint);
       clearTimeout(streamTimeout);
       startTimeRef.current = new Date();
       toast.success('Started stream.', { id: 'STREAM_STATUS' });
@@ -232,6 +230,7 @@ const useBroadcastSDK = () => {
       await startStream({
         client: broadcastClientRef.current,
         streamKey,
+        ingestEndpoint,
       });
     }
   };

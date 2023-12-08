@@ -10,7 +10,6 @@ export default function CameraCanvas({ videoStream, width, height }) {
     canvasElemRef.current.width = width;
     canvasElemRef.current.height = height;
     videoElemRef.current.srcObject = videoStream;
-    // videoElemRef.current.play();
   }, [width, height, videoStream]);
 
   const calcScaledCoords = useCallback(

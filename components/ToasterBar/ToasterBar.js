@@ -1,7 +1,7 @@
 import React from 'react';
-import { Toaster, ToastBar as HotToastBar } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
-const ToastBar = function ToastBar() {
+const ToasterBar = function ToasterBar() {
   return (
     <div>
       <Toaster
@@ -13,4 +13,4 @@ const ToastBar = function ToastBar() {
   );
 };
 
-export default ToastBar;
+export default ToasterBar;
