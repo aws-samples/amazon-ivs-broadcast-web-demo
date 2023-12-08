@@ -5,35 +5,30 @@ import {
   getAvailableDevices,
   getScreenshareStream,
   getIdealDevice,
+  getDisconnectedDevices,
+  getConnectedDevices,
 } from '@/utils/LocalMedia';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { UserSettingsContext } from '@/providers/UserSettingsContext';
+import toast from 'react-hot-toast';
+import { debounce } from '@/utils/Helpers';
 
 function useLocalMedia() {
   const { configRef, orientation } = useContext(UserSettingsContext);
 
-  const localAudioStreamRef = useRef();
-  const localVideoStreamRef = useRef();
-
   const videoElemRef = useRef();
   const canvasElemRef = useRef();
-
-  const [localVideoMounted, setLocalVideoMounted] = useState(false);
-  const [localAudioMounted, setLocalAudioMounted] = useState(false);
+  const localAudioStreamRef = useRef();
+  const localVideoStreamRef = useRef();
   const localVideoDeviceIdRef = useRef();
   const localAudioDeviceIdRef = useRef();
-  // const [localVideoDeviceId, setLocalVideoDeviceId] = useState(false);
-  // const [localAudioDeviceId, setLocalAudioDeviceId] = useState(false);
   const localScreenShareRef = useRef();
-  // const audioDevicesRef = useRef([]);
-  // const videoDevicesRef = useRef([]);
 
-  const cameraCanvasRef = useRef();
-  const cameraVideoRef = useRef();
-
+  const [permissions, setPermissions] = useState(false);
   const [audioDevices, setAudioDevices] = useState([]);
   const [videoDevices, setVideoDevices] = useState([]);
-  const [permissions, setPermissions] = useState(false);
+  const [localVideoMounted, setLocalVideoMounted] = useState(false);
+  const [localAudioMounted, setLocalAudioMounted] = useState(false);
 
   const [savedAudioDeviceId, setSavedAudioDeviceId] = useLocalStorage(
     'savedAudioDeviceId',
@@ -57,22 +52,101 @@ function useLocalMedia() {
     const audioStream = await updateLocalAudio(audioDeviceId);
     const videoStream = await updateLocalVideo(videoDeviceId);
 
+    navigator.mediaDevices.addEventListener('devicechange', handleDeviceChange);
+
     return { audioDeviceId, audioStream, videoDeviceId, videoStream };
   };
 
-  const refreshDevices = async () => {
-    const { videoDevices, audioDevices, permissions } =
-      await getAvailableDevices({ savedAudioDeviceId, savedVideoDeviceId });
+  const cleanUpDevices = () => {
+    navigator.mediaDevices.removeEventListener(
+      'devicechange',
+      handleDeviceChange
+    );
+  };
 
-    const formattedAudioDevices = audioDevices.map((device) => {
+  const refreshDevices = async (e) => {
+    console.log(e);
+    const isDeviceChange = e?.type === 'devicechange';
+
+    const {
+      videoDevices: _videoDevices,
+      audioDevices: _audioDevices,
+      permissions,
+    } = await getAvailableDevices({ savedAudioDeviceId, savedVideoDeviceId });
+
+    const formattedAudioDevices = _audioDevices.map((device) => {
       return { label: device.label, value: device.deviceId };
     });
-    const formattedVideoDevices = videoDevices.map((device) => {
+    const formattedVideoDevices = _videoDevices.map((device) => {
       return { label: device.label, value: device.deviceId };
     });
 
-    setAudioDevices(formattedAudioDevices);
-    setVideoDevices(formattedVideoDevices);
+    setAudioDevices((prevState) => {
+      if (!isDeviceChange) return formattedAudioDevices;
+      if (prevState.length > formattedAudioDevices.length) {
+        // Device disconnected
+        const [disconnectedDevice] = getDisconnectedDevices(
+          prevState,
+          formattedAudioDevices
+        );
+
+        if (disconnectedDevice.value === localAudioDeviceIdRef.current) {
+          // Currently active device was disconnected
+          const newDevice =
+            formattedAudioDevices.find(({ value }) => value === 'default') ||
+            formattedAudioDevices[0];
+          debugger;
+          updateLocalAudio(newDevice.value);
+        }
+
+        toast.error(`Device disconnected: ${disconnectedDevice.label}`, {
+          id: 'MIC_DEVICE_UPDATE',
+        });
+      } else if (prevState.length < formattedAudioDevices.length) {
+        // Device connected
+        const [connectedDevice] = getConnectedDevices(
+          prevState,
+          formattedAudioDevices
+        );
+        toast.success(`Device connected: ${connectedDevice.label}`, {
+          id: 'MIC_DEVICE_UPDATE',
+        });
+      }
+      return formattedAudioDevices;
+    });
+
+    setVideoDevices((prevState) => {
+      if (!isDeviceChange) return formattedVideoDevices;
+      if (prevState.length > formattedVideoDevices.length) {
+        // Device disconnected
+        const [disconnectedDevice] = getDisconnectedDevices(
+          prevState,
+          formattedVideoDevices
+        );
+
+        if (disconnectedDevice.value === localAudioDeviceIdRef.current) {
+          // Currently active device was disconnected
+          const newDevice =
+            formattedVideoDevices.find(({ value }) => value === 'default') ||
+            formattedVideoDevices[0];
+          updateLocalVideo(newDevice.value);
+        }
+
+        toast.error(`Device disconnected: ${disconnectedDevice.label}`, {
+          id: 'CAM_DEVICE_UPDATE',
+        });
+      } else if (prevState.length < formattedVideoDevices.length) {
+        // Device connected
+        const [connectedDevice] = getConnectedDevices(
+          prevState,
+          formattedVideoDevices
+        );
+        toast.success(`Device connected: ${connectedDevice.label}`, {
+          id: 'CAM_DEVICE_UPDATE',
+        });
+      }
+      return formattedVideoDevices;
+    });
 
     setPermissions(permissions);
 
@@ -116,7 +190,7 @@ function useLocalMedia() {
       screenShareStream = await getScreenshareStream();
       localScreenShareRef.current = screenShareStream;
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
     return screenShareStream;
   };
@@ -154,6 +228,8 @@ function useLocalMedia() {
     return audioStream;
   };
 
+  const handleDeviceChange = debounce(refreshDevices, 1000);
+
   return {
     permissions,
     localVideoMounted,
@@ -172,6 +248,7 @@ function useLocalMedia() {
     updateLocalAudio,
     updateLocalVideo,
     setInitialDevices,
+    cleanUpDevices,
     refreshDevices,
     setAudioDevices,
     setVideoDevices,

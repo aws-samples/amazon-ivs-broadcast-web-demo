@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import Button from '@/components/Button';
 import Select from '@/components/Select';
 import Input from '@/components/Input';
-import Checkbox from '@/components/Checkbox';
 import Spacer from '@/components/Spacer';
 import Toggle from '@/components/Toggle';
 import { DeviceSelect } from './DeviceSelect';

@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+``;
 import ToastBar from '@/components/ToastBar';
 import StatusBar from '@/components/StatusBar';
 import StreamPreview from '@/components/StreamPreview';
@@ -12,6 +14,8 @@ import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import CameraCanvas from '../CameraCanvas/CameraCanvas';
 
 export default function BroadcastApp() {
+  const searchParams = useSearchParams();
+
   const { toggleModal, modalProps, modalActive, modalContent } =
     useContext(ModalContext);
   const { showFullScreenCam } = useContext(BroadcastLayoutContext);
@@ -21,13 +25,14 @@ export default function BroadcastApp() {
     destroyBroadcastClient,
     broadcastClientMounted,
   } = useContext(BroadcastContext);
-  const { configRef, ingestEndpoint } = useContext(UserSettingsContext);
+  const { configRef, ingestEndpoint, setIngestEndpoint, setStreamKey } =
+    useContext(UserSettingsContext);
   const {
     setInitialDevices,
     localVideoDeviceId,
     localVideoStreamRef,
-    videoElemRef,
     canvasElemRef,
+    cleanUpDevices,
   } = useContext(LocalMediaContext);
 
   const previewRef = useRef(undefined);
@@ -59,9 +64,35 @@ export default function BroadcastApp() {
     return () => {
       if (broadcastClientRef.current)
         destroyBroadcastClient(broadcastClientRef.current);
+      cleanUpDevices();
     };
     // run once on mount
   }, []);
+
+  useEffect(() => {
+    const uidQuery = searchParams.get('uid');
+    const skQuery = searchParams.get('sk');
+    const channelTypeQuery = searchParams.get('channelType');
+
+    if (uidQuery)
+      setIngestEndpoint(`${uidQuery}.global-contribute.live-video.net`);
+    if (skQuery) setStreamKey(skQuery);
+    if (channelTypeQuery) {
+      const formatted = channelType.toUpperCase();
+      switch (formatted) {
+        case 'BASIC':
+          setChannelType('BASIC');
+          break;
+        case 'STANDARD':
+          setChannelType('STANDARD');
+        default:
+          console.error(
+            `Channel type must be STANDARD, BASIC. The channel type you provided is ${channelType}. The default value of BASIC has been set`
+          );
+          break;
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (broadcastClientMounted)

@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.0.18",
     "amazon-ivs-web-broadcast": "^1.6.0",
     "clsx": "^2.0.0",
+    "core-js-pure": "3.34.0",
     "expr-eval": "^2.0.2",
     "moment": "^2.29.4",
     "next": "^13.5.0",

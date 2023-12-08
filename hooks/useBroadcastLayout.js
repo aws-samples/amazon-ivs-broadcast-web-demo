@@ -5,7 +5,6 @@ import {
   VIDEO_TEMPLATE,
 } from '@/utils/BroadcastLayoutTemplates';
 import { BroadcastContext } from '@/providers/BroadcastContext';
-import { UserSettingsContext } from '@/providers/UserSettingsContext';
 import { formatPositionFromDimensions } from '@/utils/BroadcastLayout';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import { BroadcastMixerContext } from '@/providers/BroadcastMixerContext';

@@ -199,7 +199,7 @@ async function getScreenshareStream() {
       },
     });
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
   return captureStream;
 }
@@ -214,6 +214,14 @@ function getIdealDevice(deviceId, devices) {
   return deviceExists ? deviceId : devices[0].value;
 }
 
+function getDisconnectedDevices(oldDeviceArr, newDeviceArr) {
+  return oldDeviceArr.filter((oldDevice) => !newDeviceArr.includes(oldDevice));
+}
+
+function getConnectedDevices(oldDeviceArr, newDeviceArr) {
+  return newDeviceArr.filter((newDevice) => !oldDeviceArr.includes(newDevice));
+}
+
 export {
   getAvailableDevices,
   getCameraStream,
@@ -221,4 +229,6 @@ export {
   getScreenshareStream,
   stopMediaStream,
   getIdealDevice,
+  getDisconnectedDevices,
+  getConnectedDevices,
 };

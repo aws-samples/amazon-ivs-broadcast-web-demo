@@ -36,6 +36,7 @@ export default function Tooltip({
 
   const tipClass = twMerge(
     clsx(
+      'select-none',
       'bottom-full',
       'absolute',
       'font-medium',

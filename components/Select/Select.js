@@ -14,6 +14,7 @@ export default function Select({
   defaultValue,
   options,
   disabled,
+  id,
 }) {
   const defaultOption = options.find(
     (option) => option.value === defaultValue.toString()
@@ -29,12 +30,15 @@ export default function Select({
     <div>
       <div className='flex w-full items-center gap-x-1'>
         <Listbox
-          value={value && value.value}
+          value={value}
           onChange={handleChange}
           disabled={disabled || false}
         >
           <div className='grow relative mt-1'>
-            <Listbox.Button className='relative w-full cursor-default rounded-lg bg-surfaceAlt/75 hover:bg-surfaceAlt py-2 pl-3 pr-10 text-left appearance-none focus:outline-none focus-visible:ring-2 focus-visible:ring-surfaceAlt2/25 focus-visible:ring-offset-2 ring-offset-surface sm:text-sm disabled:opacity-75 disabled:pointer-events-none disabled:ring-0 disabled:cursor-not-allowed'>
+            <Listbox.Button
+              className='relative w-full cursor-default rounded-lg bg-surfaceAlt/75 hover:bg-surfaceAlt py-2 pl-3 pr-10 text-left appearance-none focus:outline-none focus-visible:ring-2 focus-visible:ring-surfaceAlt2/25 focus-visible:ring-offset-2 ring-offset-surface sm:text-sm disabled:opacity-75 disabled:pointer-events-none disabled:ring-0 disabled:cursor-not-allowed'
+              id={id}
+            >
               <span className='block truncate'>{value && value.label}</span>
               <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
                 {!disabled && (

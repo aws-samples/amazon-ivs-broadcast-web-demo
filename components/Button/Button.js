@@ -26,7 +26,7 @@ export default function Button({
       'rounded',
       'bg-surfaceAlt/90 hover:bg-surfaceAlt',
       'disabled:opacity-75 disabled:pointer-events-none disabled:ring-0',
-      'text-uiText/90 hover:text-uiText',
+      'text-uiText/90 hover:text-uiText disabled:opacity-50',
       {
         'bg-primary/10 ring-2 ring-primary/10 text-primaryAlt hover:bg-primary/20 hover:text-primaryAlt hover:ring-primary/20 focus:text-primaryAlt focus:ring-primary/20':
           type === 'primary',
