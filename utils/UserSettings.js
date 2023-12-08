@@ -2,14 +2,6 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import { useEffect, useRef } from 'react';
 import { isMobileOnly } from 'react-device-detect';
 
-const defaultVideoConfiguration = {
-  idealWidth: 1280,
-  idealHeight: 720,
-  idealFramerate: 30,
-  idealAspect: 16 / 9,
-  idealFacingMode: 'user',
-};
-
 const DEFAULT_RESOLUTION = 720;
 const DEFAULT_INGEST = 'ingest.global-contribute.live-video.net';
 const CHANNEL_TYPES = {
@@ -67,19 +59,19 @@ export function getSavedValuesFromLocalStorage() {
   );
   const [localVideoMirror, setLocalVideoMirror] = useLocalStorage(
     'localVideoMirror',
-    undefined
+    false
   );
   const [audioNoiseSuppression, setAudioNoiseSuppression] = useLocalStorage(
     'audioNoiseSuppression',
-    undefined
+    true
   );
   const [autoGainControl, setAutoGainControl] = useLocalStorage(
     'autoGainControl',
-    undefined
+    true
   );
   const [saveSettings, setSaveSettings] = useLocalStorage(
     'rememberSettings',
-    undefined
+    false
   );
 
   const configRef = useRef(

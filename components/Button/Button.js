@@ -1,4 +1,3 @@
-import styles from './Button.module.css';
 import Spinner from '../Spinner';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';

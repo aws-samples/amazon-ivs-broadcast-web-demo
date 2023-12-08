@@ -1,5 +1,4 @@
 import { twMerge } from 'tailwind-merge';
-import styles from './Input.module.css';
 import { useState } from 'react';
 import clsx from 'clsx';
 

@@ -1,7 +1,5 @@
-import { useEffect, Fragment } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import ReactDOM from 'react-dom';
-import clsx from 'clsx';
 
 export default function Modal({ type, show, onClose, children }) {
   // Nextjs browser env check

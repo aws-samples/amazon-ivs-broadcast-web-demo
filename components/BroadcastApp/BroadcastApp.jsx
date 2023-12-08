@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-``;
 import ToastBar from '@/components/ToastBar';
 import StatusBar from '@/components/StatusBar';
 import StreamPreview from '@/components/StreamPreview';

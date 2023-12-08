@@ -4,6 +4,7 @@ import Select from '@/components/Select';
 import Input from '@/components/Input';
 import Spacer from '@/components/Spacer';
 import Toggle from '@/components/Toggle';
+import Icon from '@/components/Icon';
 import { DeviceSelect } from './DeviceSelect';
 import { UserSettingsContext } from '@/providers/UserSettingsContext';
 import { BroadcastContext } from '@/providers/BroadcastContext';
@@ -12,6 +13,7 @@ import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import { ModalContext } from '@/providers/ModalContext';
 import { getConfigFromResolution } from '@/utils/UserSettings';
 import { BroadcastMixerContext } from '@/providers/BroadcastMixerContext';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Settings() {
   const {
@@ -224,7 +226,7 @@ export default function Settings() {
             onSubmit={(e) => e.preventDefault()}
           >
             <fieldset className='w-full m-0 p-0 border-0'>
-              <label className='block' htmlFor='select-channelType'>
+              <label className='block text-sm' htmlFor='select-channelType'>
                 Channel type
               </label>
               <Select
@@ -261,7 +263,7 @@ export default function Settings() {
               />
             </fieldset>
             <fieldset className='w-full m-0 p-0 border-0'>
-              <label className='block' htmlFor='select-resolution'>
+              <label className='block text-sm' htmlFor='select-resolution'>
                 Stream Resolution
               </label>
               <Select
@@ -293,7 +295,7 @@ export default function Settings() {
             </fieldset>
             <Spacer size='sm' />
             <fieldset className='w-full m-0 p-0 border-0'>
-              <label className='block' htmlFor='select-resolution'>
+              <label className='block text-sm' htmlFor='select-resolution'>
                 Orientation
               </label>
               <Select
@@ -318,7 +320,7 @@ export default function Settings() {
             <Spacer size='sm' />
             <fieldset className='w-full m-0 p-0 border-0'>
               <label
-                className='block'
+                className='block text-sm'
                 htmlFor='input-ingest'
                 ref={ingestFieldRef}
               >
@@ -340,7 +342,7 @@ export default function Settings() {
               />
             </fieldset>
             <fieldset className='w-full m-0 p-0 border-0'>
-              <label className='block' htmlFor='input-key'>
+              <label className='block text-sm' htmlFor='input-key'>
                 Stream key
               </label>
               <Input
@@ -359,19 +361,24 @@ export default function Settings() {
                 autoFocus={_streamKeyError ? true : false}
               />
             </fieldset>
-            <p className='text-sm inline-block mt-2 text-uiText'>
-              The ingest endpoint, stream key, and channel type can be found in
-              the{' '}
-              <a
-                href='https://console.aws.amazon.com/ivs/channels'
-                target='_blank'
-                rel='noreferrer noopener'
-                className='text-primaryAlt dark-theme:text-primary hover:text-primary hover:dark-theme:text-primaryAlt hover:underline underline-offset-1'
-              >
-                AWS console↗
-              </a>
-              .
-            </p>
+            <div className='flex mt-2 p-4 gap-2 rounded-md bg-primary/10 border border-primary/20'>
+              <Icon>
+                <InformationCircleIcon />
+              </Icon>
+              <p className='text-sm inline-block text-uiText mt-1'>
+                The ingest endpoint, stream key, and channel type can be found
+                in the{' '}
+                <a
+                  href='https://console.aws.amazon.com/ivs/channels'
+                  target='_blank'
+                  rel='noreferrer noopener'
+                  className='text-primaryAlt dark-theme:text-primary hover:text-primary hover:dark-theme:text-primaryAlt hover:underline underline-offset-1'
+                >
+                  AWS console↗
+                </a>
+                .
+              </p>
+            </div>
           </form>
           <Spacer />
           <fieldset className='w-full m-0 p-0 border-0'>

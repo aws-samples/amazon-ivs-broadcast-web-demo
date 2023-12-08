@@ -215,11 +215,21 @@ function getIdealDevice(deviceId, devices) {
 }
 
 function getDisconnectedDevices(oldDeviceArr, newDeviceArr) {
-  return oldDeviceArr.filter((oldDevice) => !newDeviceArr.includes(oldDevice));
+  return oldDeviceArr.filter(
+    (oldDevice) =>
+      newDeviceArr.findIndex(
+        (newDevice) => newDevice.value === oldDevice.value
+      ) === -1
+  );
 }
 
 function getConnectedDevices(oldDeviceArr, newDeviceArr) {
-  return newDeviceArr.filter((newDevice) => !oldDeviceArr.includes(newDevice));
+  return newDeviceArr.filter(
+    (newDevice) =>
+      oldDeviceArr.findIndex(
+        (oldDevice) => oldDevice.value === newDevice.value
+      ) === -1
+  );
 }
 
 export {

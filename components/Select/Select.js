@@ -31,6 +31,7 @@ export default function Select({
       <div className='flex w-full items-center gap-x-1'>
         <Listbox
           value={value}
+          by='value'
           onChange={handleChange}
           disabled={disabled || false}
         >

@@ -1,14 +1,14 @@
 import { Switch } from '@headlessui/react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function Toggle({ label, defaultValue, onChange }) {
   const [checked, setChecked] = useState(defaultValue);
 
-  const handleChange = () => {
+  const handleChange = useCallback(() => {
     const newChecked = !checked;
     setChecked(newChecked);
     onChange(newChecked);
-  };
+  }, [checked, setChecked, onChange]);
 
   return (
     <label className='inline-flex items-center justify-start gap-2 text-sm text-uiText/50'>

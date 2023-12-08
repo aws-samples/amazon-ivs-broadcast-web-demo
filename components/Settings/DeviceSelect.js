@@ -1,13 +1,9 @@
-import styles from './Settings.module.css';
 import Select from '../Select';
 
 export function DeviceSelect({ activeDeviceId, items, name, id, onChange }) {
   return (
-    <fieldset className={styles.deviceSelectField}>
-      <label
-        className={styles.deviceSelectLabel}
-        htmlFor={`${id}`}
-      >{`${name}`}</label>
+    <fieldset className='w-full m-0 p-0 border-0'>
+      <label className='block text-sm' htmlFor={`${id}`}>{`${name}`}</label>
       <Select
         onChange={onChange}
         defaultValue={activeDeviceId}

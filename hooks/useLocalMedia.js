@@ -65,7 +65,6 @@ function useLocalMedia() {
   };
 
   const refreshDevices = async (e) => {
-    console.log(e);
     const isDeviceChange = e?.type === 'devicechange';
 
     const {
@@ -81,6 +80,9 @@ function useLocalMedia() {
       return { label: device.label, value: device.deviceId };
     });
 
+    var newAudioDevice;
+    var newVideoDevice;
+
     setAudioDevices((prevState) => {
       if (!isDeviceChange) return formattedAudioDevices;
       if (prevState.length > formattedAudioDevices.length) {
@@ -89,14 +91,11 @@ function useLocalMedia() {
           prevState,
           formattedAudioDevices
         );
-
         if (disconnectedDevice.value === localAudioDeviceIdRef.current) {
           // Currently active device was disconnected
-          const newDevice =
+          newAudioDevice =
             formattedAudioDevices.find(({ value }) => value === 'default') ||
             formattedAudioDevices[0];
-          debugger;
-          updateLocalAudio(newDevice.value);
         }
 
         toast.error(`Device disconnected: ${disconnectedDevice.label}`, {
@@ -126,10 +125,9 @@ function useLocalMedia() {
 
         if (disconnectedDevice.value === localAudioDeviceIdRef.current) {
           // Currently active device was disconnected
-          const newDevice =
+          newVideoDevice =
             formattedVideoDevices.find(({ value }) => value === 'default') ||
             formattedVideoDevices[0];
-          updateLocalVideo(newDevice.value);
         }
 
         toast.error(`Device disconnected: ${disconnectedDevice.label}`, {
@@ -147,6 +145,9 @@ function useLocalMedia() {
       }
       return formattedVideoDevices;
     });
+
+    if (newAudioDevice) await updateLocalAudio(newAudioDevice.value);
+    if (newVideoDevice) await updateLocalVideo(newVideoDevice.value);
 
     setPermissions(permissions);
 
@@ -167,6 +168,15 @@ function useLocalMedia() {
     const audioStream = await setLocalAudioFromId(deviceId);
     localAudioDeviceIdRef.current = deviceId;
     setSavedAudioDeviceId(deviceId);
+
+    const device = audioDevices.find((device) => device.value === deviceId);
+    if (device) {
+      toast.success(`Changed mic: ${device.label}`, {
+        id: 'MIC_DEVICE_UPDATE',
+        duration: 5000,
+      });
+    }
+
     return audioStream;
   };
 
@@ -177,9 +187,18 @@ function useLocalMedia() {
     } catch (err) {
       console.error(err);
     }
+
     const videoStream = await setLocalVideoFromId(deviceId);
     localVideoDeviceIdRef.current = deviceId;
     setSavedVideoDeviceId(deviceId);
+
+    const device = videoDevices.find((device) => device.value === deviceId);
+    if (device) {
+      toast.success(`Changed camera: ${device.label}`, {
+        id: 'CAM_DEVICE_UPDATE',
+        duration: 5000,
+      });
+    }
 
     return videoStream;
   };

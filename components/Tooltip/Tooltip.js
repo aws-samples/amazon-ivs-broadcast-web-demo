@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styles from './Tooltip.module.css';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 

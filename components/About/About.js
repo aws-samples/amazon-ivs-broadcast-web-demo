@@ -1,4 +1,3 @@
-import styles from './About.module.css';
 import Button from '../Button';
 import Icon from '../Icon';
 import { useContext } from 'react';
