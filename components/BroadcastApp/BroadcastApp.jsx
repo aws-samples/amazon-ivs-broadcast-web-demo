@@ -61,6 +61,7 @@ export default function BroadcastApp() {
               cameraIsCanvas: enableCanvasCamera,
               micStream: audioStream,
               micId: audioDeviceId,
+              showMuteIcon: false,
             });
           });
         }

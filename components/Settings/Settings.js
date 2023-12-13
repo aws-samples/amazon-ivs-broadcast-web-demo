@@ -55,7 +55,7 @@ export default function Settings() {
     enableCanvasCamera,
   } = useContext(LocalMediaContext);
   const { restartBroadcastClient, isLive } = useContext(BroadcastContext);
-  const { setMicMuted } = useContext(BroadcastMixerContext);
+  const { micMuted, setMicMuted } = useContext(BroadcastMixerContext);
   const { setCamActive, refreshCurrentScene } = useContext(
     BroadcastLayoutContext
   );
@@ -113,28 +113,12 @@ export default function Settings() {
     let sceneRefreshRequired = false;
     let _videoStream = undefined;
 
-    console.log(
-      '🚀 ~ file: Settings.js:117 ~ handleLocalModalSave ~ localVideoDeviceId:',
-      localVideoDeviceId
-    );
-    console.log(
-      '🚀 ~ file: Settings.js:117 ~ handleLocalModalSave ~ _videoDevice:',
-      _videoDevice
-    );
     if (_videoDevice !== localVideoDeviceId) {
       _videoStream = await updateLocalVideo(_videoDevice);
       setCamActive(true);
       sceneRefreshRequired = true;
     }
 
-    console.log(
-      '🚀 ~ file: Settings.js:126 ~ handleLocalModalSave ~ localAudioDeviceId:',
-      localAudioDeviceId
-    );
-    console.log(
-      '🚀 ~ file: Settings.js:126 ~ handleLocalModalSave ~ _audioDevice:',
-      _audioDevice
-    );
     if (_audioDevice !== localAudioDeviceId) {
       await updateLocalAudio(_audioDevice);
       setMicMuted(false);
@@ -194,6 +178,7 @@ export default function Settings() {
         cameraId: _videoDevice,
         micContent: localAudioStreamRef.current,
         micId: _audioDevice,
+        showMuteIcon: micMuted,
       });
     }
 

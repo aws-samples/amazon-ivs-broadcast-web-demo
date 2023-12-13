@@ -1,6 +1,6 @@
 import { BroadcastContext } from '@/providers/BroadcastContext';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const useBroadcastMixer = () => {
@@ -113,12 +113,21 @@ const useBroadcastMixer = () => {
       .getAudioTracks()[0];
     setMicMuted((prevState) => {
       audioTrack.enabled = prevState;
-      toast.success(`${prevState ? 'Mic unmuted' : 'Mic muted'}`, {
-        id: 'MIC_STATUS',
-      });
+      // toast.success(`${prevState ? 'Mic unmuted' : 'Mic muted'}`, {
+      //   id: 'MIC_STATUS',
+      // });
       return !prevState;
     });
   };
+
+  useEffect(() => {
+    if (!broadcastClientRef.current) return;
+    const muteIcon =
+      broadcastClientRef.current.getVideoInputDevice('micMutedIcon');
+    if (muteIcon) {
+      muteIcon.render = micMuted;
+    }
+  }, [micMuted]);
 
   return {
     micMuted,

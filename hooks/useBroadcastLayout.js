@@ -2,7 +2,6 @@ import { useContext, useRef, useState } from 'react';
 import {
   DEFAULT_TEMPLATE,
   SCREENSHARE_TEMPLATE,
-  VIDEO_TEMPLATE,
 } from '@/utils/BroadcastLayoutTemplates';
 import { BroadcastContext } from '@/providers/BroadcastContext';
 import {
@@ -28,6 +27,7 @@ const useBroadcastLayout = () => {
     enableCanvasCamera,
   } = useContext(LocalMediaContext);
   const {
+    micMuted,
     mixerDevicesRef,
     removeMixerDevice,
     addMixerDevice,
@@ -47,9 +47,9 @@ const useBroadcastLayout = () => {
       const nextState = !prevState;
       currentVideoTrack.enabled = nextState;
       currentCam.render = nextState;
-      toast.success(`${nextState ? 'Camera shown' : 'Camera hidden'}`, {
-        id: 'CAMERA_STATE',
-      });
+      // toast.success(`${nextState ? 'Camera shown' : 'Camera hidden'}`, {
+      //   id: 'CAMERA_STATE',
+      // });
       return nextState;
     });
   };
@@ -66,6 +66,7 @@ const useBroadcastLayout = () => {
       cameraVisible: camActive,
       micStream: localAudioStreamRef.current,
       micId: localAudioDeviceId,
+      micActive: !micMuted,
     });
     setScreenShareActive(false);
     toast.success('Screen share stopped', { id: 'SCREENSHARE_STATUS' });
@@ -169,6 +170,11 @@ const useBroadcastLayout = () => {
     await loadImage(img);
     try {
       await broadcastClientRef.current.addImageSource(img, name, position);
+      if (!visible) {
+        const addedDevice =
+          await broadcastClientRef.current.getVideoInputDevice(name);
+        addedDevice.render = false;
+      }
       addLayerToRef({ name, type: 'image' });
     } catch (err) {
       console.error(err);
@@ -398,6 +404,7 @@ const useBroadcastLayout = () => {
     cameraId,
     cameraVisible = true,
     cameraIsCanvas = false,
+    showMuteIcon = micMuted,
     micStream,
     micId,
     screenShareStream,
@@ -413,6 +420,8 @@ const useBroadcastLayout = () => {
       screenShareContent: screenShareStream,
       screenShareId: screenShareId,
       cameraOffContent: '/assets/camera-off.png',
+      showMuteIcon: showMuteIcon,
+      micMutedContent: '/assets/mic-off.png',
       backgroundContent: '/assets/camera-bg.png',
       micContent: micStream,
       micId: micId,
@@ -430,6 +439,7 @@ const useBroadcastLayout = () => {
     cameraIsCanvas,
     micStream,
     micId,
+    showMuteIcon = micMuted,
   }) => {
     let cameraResize = undefined;
     if (!cameraIsCanvas) {
@@ -446,6 +456,8 @@ const useBroadcastLayout = () => {
       cameraIsCanvas: cameraIsCanvas,
       cameraResize: cameraResize,
       cameraOffContent: '/assets/camera-off.png',
+      showMuteIcon: showMuteIcon,
+      micMutedContent: '/assets/mic-off.png',
       backgroundContent: '/assets/camera-bg.png',
       micContent: micStream,
       micId: micId,

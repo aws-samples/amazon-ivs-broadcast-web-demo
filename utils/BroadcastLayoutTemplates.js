@@ -5,6 +5,8 @@ export const DEFAULT_TEMPLATE = ({
   cameraIsCanvas = false,
   cameraResize = undefined,
   cameraOffContent,
+  micMutedContent,
+  showMuteIcon = false,
   backgroundContent,
   micId,
   micContent,
@@ -12,6 +14,19 @@ export const DEFAULT_TEMPLATE = ({
   return {
     name: 'defaultTemplate',
     slots: [
+      {
+        name: 'micMutedIcon',
+        type: 'image',
+        dimensions: {
+          x: 'CANVAS_WIDTH - LAYER_WIDTH - LAYER_WIDTH * 0.5',
+          y: 'LAYER_WIDTH * 0.5',
+          z: 4,
+          w: 'CANVAS_HEIGHT * 0.06',
+          h: 'CANVAS_HEIGHT * 0.06',
+        },
+        visible: showMuteIcon,
+        content: micMutedContent,
+      },
       {
         name: cameraId,
         type: cameraIsCanvas ? 'video' : 'device',
@@ -66,6 +81,8 @@ export const DEFAULT_TEMPLATE = ({
       cameraIsCanvas: _cameraIsCanvas,
       cameraResize: _cameraResize,
       cameraOffContent: _cameraOffContent,
+      micMutedContent: _micMutedContent,
+      showMuteIcon: _showMuteIcon,
       backgroundContent: _backgroundContent,
       micId: _micId,
       micContent: _micContent,
@@ -77,6 +94,8 @@ export const DEFAULT_TEMPLATE = ({
         cameraResize: _cameraResize || cameraResize,
         cameraIsCanvas: _cameraIsCanvas || cameraIsCanvas,
         cameraOffContent: _cameraOffContent || cameraOffContent,
+        micMutedContent: _micMutedContent || micMutedContent,
+        showMuteIcon: _showMuteIcon || showMuteIcon,
         backgroundContent: _backgroundContent || backgroundContent,
         micContent: _micContent || micContent,
         micId: _micId || micId,
@@ -94,6 +113,8 @@ export const SCREENSHARE_TEMPLATE = ({
   screenShareContent,
   screenShareId,
   cameraOffContent,
+  micMutedContent,
+  showMuteIcon = false,
   backgroundContent,
   micContent,
   micId,
@@ -103,6 +124,19 @@ export const SCREENSHARE_TEMPLATE = ({
   return {
     name: 'screenshareTemplate',
     slots: [
+      {
+        name: 'micMutedIcon',
+        type: 'image',
+        dimensions: {
+          x: 'CANVAS_WIDTH - LAYER_WIDTH - LAYER_WIDTH * 0.5',
+          y: 'LAYER_WIDTH * 0.5',
+          z: 4,
+          w: 'CANVAS_HEIGHT * 0.06',
+          h: 'CANVAS_HEIGHT * 0.06',
+        },
+        visible: showMuteIcon,
+        content: micMutedContent,
+      },
       {
         name: cameraId,
         type: cameraIsCanvas ? 'video' : 'device',
@@ -160,6 +194,8 @@ export const SCREENSHARE_TEMPLATE = ({
       screenShareContent: _screenShareContent,
       screenShareId: _screenShareId,
       cameraOffContent: _cameraOffContent,
+      micMutedContent: _micMutedContent,
+      showMuteIcon: _showMuteIcon,
       backgroundContent: _backgroundContent,
       micContent: _micContent,
       micId: _micId,
@@ -173,6 +209,8 @@ export const SCREENSHARE_TEMPLATE = ({
         screenShareContent: _screenShareContent || screenShareContent,
         screenShareId: _screenShareId || screenShareId,
         cameraOffContent: _cameraOffContent || cameraOffContent,
+        micMutedContent: _micMutedContent || micMutedContent,
+        showMuteIcon: _showMuteIcon || showMuteIcon,
         backgroundContent: _backgroundContent || backgroundContent,
         micId: _micId || micId,
         micContent: _micContent || micContent,
