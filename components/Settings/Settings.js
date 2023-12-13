@@ -141,33 +141,33 @@ export default function Settings() {
       sceneRefreshRequired = true;
     }
 
-    if (_channelType !== channelType || saveSettings) {
+    if (_channelType !== channelType) {
       setChannelType(_channelType);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_resolution !== resolution || saveSettings) {
+    if (_resolution !== resolution) {
       setResolution(_resolution);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_orientation !== orientation || saveSettings) {
+    if (_orientation !== orientation) {
       setOrientation(_orientation);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_ingestServer !== ingestEndpoint || saveSettings) {
+    if (_ingestServer !== ingestEndpoint) {
       setIngestEndpoint(_ingestServer);
     }
 
-    if (_streamKey !== streamKey || saveSettings) {
+    if (_streamKey !== streamKey) {
       setStreamKey(_streamKey);
     }
 
-    if (_localVideoMirror !== localVideoMirror || saveSettings) {
+    if (_localVideoMirror !== localVideoMirror) {
       setLocalVideoMirror(_localVideoMirror);
     }
 
