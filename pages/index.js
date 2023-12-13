@@ -11,9 +11,6 @@ const BroadcastApp = dynamic(() => import('@/components/BroadcastApp'), {
   ssr: false,
 });
 
-const CAM_LAYER_NAME = 'camera';
-const MIC_LAYER_NAME = 'mic';
-
 export default function Broadcast() {
   const isLive = false;
   const title = `Amazon IVS – Web Broadcast Tool - ${

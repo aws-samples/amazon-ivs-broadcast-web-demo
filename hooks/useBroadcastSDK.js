@@ -2,7 +2,7 @@ import Button from '@/components/Button';
 import Settings from '@/components/Settings';
 import { ModalContext } from '@/providers/ModalContext';
 import { UserSettingsContext } from '@/providers/UserSettingsContext';
-
+import dynamic from 'next/dynamic';
 import { useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -24,7 +24,7 @@ const useBroadcastSDK = () => {
   const sdkVersionRef = useRef(undefined);
 
   const importBroadcastSDK = async () => {
-    const sdk = await import('amazon-ivs-web-broadcast');
+    const sdk = (await import('amazon-ivs-web-broadcast')).default;
     broadcastClientEventsRef.current = sdk.BroadcastClientEvents;
     IVSBroadcastClientRef.current = sdk;
     return sdk;

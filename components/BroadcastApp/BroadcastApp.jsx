@@ -35,7 +35,6 @@ export default function BroadcastApp() {
     canvasElemRef,
     cleanUpDevices,
     enableCanvasCamera,
-    setEnableCanvasCamera,
   } = useContext(LocalMediaContext);
 
   const previewRef = useRef(undefined);

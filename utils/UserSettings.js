@@ -3,10 +3,12 @@ import { useEffect, useRef } from 'react';
 import { isMobileOnly } from 'react-device-detect';
 
 const DEFAULT_RESOLUTION = 720;
-const DEFAULT_INGEST = 'ingest.global-contribute.live-video.net';
+const DEFAULT_INGEST = '';
 const CHANNEL_TYPES = {
   BASIC: 'BASIC',
   STANDARD: 'STANDARD',
+  ADVANCED_HD: 'ADVANCED_HD',
+  ADVANCED_SD: 'ADVANCED_SD',
 };
 
 export function shouldSaveSettings() {

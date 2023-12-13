@@ -248,6 +248,14 @@ export default function Settings() {
                     value: 'BASIC',
                     label: 'Basic',
                   },
+                  {
+                    value: 'ADVANCED_HD',
+                    label: 'Advanced HD',
+                  },
+                  {
+                    value: 'ADVANCED_SD',
+                    label: 'Advanced SD',
+                  },
                 ]}
                 disabled={isLive}
                 hint={
