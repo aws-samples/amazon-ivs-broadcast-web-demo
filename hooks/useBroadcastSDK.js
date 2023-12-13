@@ -30,17 +30,13 @@ const useBroadcastSDK = () => {
     return sdk;
   };
 
-  const createBroadcastClient = async ({
-    config: streamConfig,
-    ingestEndpoint,
-  }) => {
+  const createBroadcastClient = async ({ config: streamConfig }) => {
     const IVSBroadcastClient = IVSBroadcastClientRef.current
       ? IVSBroadcastClientRef.current
       : await importBroadcastSDK();
 
     const client = IVSBroadcastClient.create({
       streamConfig,
-      ingestEndpoint,
     });
 
     broadcastClientRef.current = client;

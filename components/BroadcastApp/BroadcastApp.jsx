@@ -51,7 +51,6 @@ export default function BroadcastApp() {
         if (!broadcastClientRef.current) {
           createBroadcastClient({
             config: configRef.current,
-            ingestEndpoint,
           }).then((client) => {
             const { width, height } = videoStream.getTracks()[0].getSettings();
             showFullScreenCam({

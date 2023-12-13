@@ -18,7 +18,7 @@ const UserSettingsContext = createContext({
   configRef: undefined,
   streamKey: '',
   setStreamKey: undefined,
-  ingestEndpoint: 'ingest.global-contribute.live-video.net',
+  ingestEndpoint: '',
   setIngestEndpoint: undefined,
   localVideoMirror: undefined,
   setLocalVideoMirror: undefined,

@@ -80,7 +80,9 @@ export default function Settings() {
   useEffect(() => {
     // If the stream key is empty, show an error
     if (!ingestEndpoint) {
-      _setIngestServer('ingest.global-contribute.live-video.net');
+      _setIngestError(
+        'Enter a valid ingest endpoint to start streaming. For example, 1234567890ab.global-contribute.live-video.net'
+      );
     }
     if (!streamKey) {
       _setStreamKeyError(
@@ -111,47 +113,61 @@ export default function Settings() {
     let sceneRefreshRequired = false;
     let _videoStream = undefined;
 
-    if (_videoDevice !== savedVideoDeviceId) {
+    console.log(
+      '🚀 ~ file: Settings.js:117 ~ handleLocalModalSave ~ localVideoDeviceId:',
+      localVideoDeviceId
+    );
+    console.log(
+      '🚀 ~ file: Settings.js:117 ~ handleLocalModalSave ~ _videoDevice:',
+      _videoDevice
+    );
+    if (_videoDevice !== localVideoDeviceId) {
       _videoStream = await updateLocalVideo(_videoDevice);
-      setSavedVideoDeviceId(_videoDevice);
       setCamActive(true);
       sceneRefreshRequired = true;
     }
 
-    if (_audioDevice !== savedAudioDeviceId) {
+    console.log(
+      '🚀 ~ file: Settings.js:126 ~ handleLocalModalSave ~ localAudioDeviceId:',
+      localAudioDeviceId
+    );
+    console.log(
+      '🚀 ~ file: Settings.js:126 ~ handleLocalModalSave ~ _audioDevice:',
+      _audioDevice
+    );
+    if (_audioDevice !== localAudioDeviceId) {
       await updateLocalAudio(_audioDevice);
-      setSavedAudioDeviceId(_audioDevice);
       setMicMuted(false);
       sceneRefreshRequired = true;
     }
 
-    if (_channelType !== channelType) {
+    if (_channelType !== channelType || saveSettings) {
       setChannelType(_channelType);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_resolution !== resolution) {
+    if (_resolution !== resolution || saveSettings) {
       setResolution(_resolution);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_orientation !== orientation) {
+    if (_orientation !== orientation || saveSettings) {
       setOrientation(_orientation);
       clientUpdateRequired = true;
       sceneRefreshRequired = true;
     }
 
-    if (_ingestServer !== ingestEndpoint) {
+    if (_ingestServer !== ingestEndpoint || saveSettings) {
       setIngestEndpoint(_ingestServer);
     }
 
-    if (_streamKey !== streamKey) {
+    if (_streamKey !== streamKey || saveSettings) {
       setStreamKey(_streamKey);
     }
 
-    if (_localVideoMirror !== localVideoMirror) {
+    if (_localVideoMirror !== localVideoMirror || saveSettings) {
       setLocalVideoMirror(_localVideoMirror);
     }
 
@@ -181,7 +197,13 @@ export default function Settings() {
       });
     }
 
-    if (!saveSettings) clearSavedSettings();
+    if (saveSettings) {
+      setSavedVideoDeviceId(_videoDevice);
+      setSavedAudioDeviceId(_audioDevice);
+    } else {
+      clearSavedSettings();
+    }
+
     toggleModal();
   };
 
@@ -348,6 +370,7 @@ export default function Settings() {
                 error={_ingestError}
                 placeholder={'ingest.global-contribute.live-video.net'}
                 autoFocus={_ingestError ? true : false}
+                disabled={isLive}
                 hint={
                   'Example ingest endpoint: a1b2c3d4e5f6.global-contribute.live-video.net'
                 }
@@ -367,6 +390,7 @@ export default function Settings() {
                 defaultValue={_streamKey}
                 error={_streamKeyError}
                 placeholder={'sk_us-west-2_abcdABCDefgh_567890abcdef'}
+                disabled={isLive}
                 hint={
                   'The stream key for your Amazon IVS channel. It usually begins with sk_'
                 }

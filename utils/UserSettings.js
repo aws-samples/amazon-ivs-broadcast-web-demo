@@ -11,14 +11,6 @@ const CHANNEL_TYPES = {
   ADVANCED_SD: 'ADVANCED_SD',
 };
 
-export function shouldSaveSettings() {
-  const [rememberSettings, setRememberSettings] = useLocalStorage(
-    'saveSettings',
-    undefined
-  );
-  return rememberSettings === true;
-}
-
 export function clearSavedSettings() {
   localStorage.removeItem('channelType');
   localStorage.removeItem('savedAudioDeviceId');
@@ -34,46 +26,61 @@ export function clearSavedSettings() {
 }
 
 export function getSavedValuesFromLocalStorage() {
+  const [saveSettings, setSaveSettings] = useLocalStorage(
+    'rememberSettings',
+    false,
+    false
+  );
+
   const [channelType, setChannelType] = useLocalStorage(
     'channelType',
-    CHANNEL_TYPES.BASIC
+    CHANNEL_TYPES.BASIC,
+    saveSettings
   );
   const [savedAudioDeviceId, setSavedAudioDeviceId] = useLocalStorage(
     'savedAudioDeviceId',
-    undefined
+    undefined,
+    saveSettings
   );
   const [savedVideoDeviceId, setSavedVideoDeviceId] = useLocalStorage(
     'savedVideoDeviceId',
-    undefined
+    undefined,
+    saveSettings
   );
   const [orientation, setOrientation] = useLocalStorage(
     'orientation',
-    isMobileOnly ? 'PORTRAIT' : 'LANDSCAPE'
+    isMobileOnly ? 'PORTRAIT' : 'LANDSCAPE',
+    saveSettings
   );
   const [resolution, setResolution] = useLocalStorage(
     'streamResolution',
-    DEFAULT_RESOLUTION
+    DEFAULT_RESOLUTION,
+    saveSettings
   );
-  const [streamKey, setStreamKey] = useLocalStorage('sk', undefined);
+  const [streamKey, setStreamKey] = useLocalStorage(
+    'sk',
+    undefined,
+    saveSettings
+  );
   const [ingestEndpoint, setIngestEndpoint] = useLocalStorage(
     'ingestEndpoint',
-    DEFAULT_INGEST
+    DEFAULT_INGEST,
+    saveSettings
   );
   const [localVideoMirror, setLocalVideoMirror] = useLocalStorage(
     'localVideoMirror',
-    false
+    false,
+    saveSettings
   );
   const [audioNoiseSuppression, setAudioNoiseSuppression] = useLocalStorage(
     'audioNoiseSuppression',
-    true
+    true,
+    saveSettings
   );
   const [autoGainControl, setAutoGainControl] = useLocalStorage(
     'autoGainControl',
-    true
-  );
-  const [saveSettings, setSaveSettings] = useLocalStorage(
-    'rememberSettings',
-    false
+    true,
+    saveSettings
   );
 
   const configRef = useRef(

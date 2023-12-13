@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useLocalStorage = (key, defaultValue) => {
+const useLocalStorage = (key, defaultValue, saveSettings = false) => {
   const [value, setValue] = useState(() => {
     let currentValue;
 
@@ -16,8 +16,9 @@ const useLocalStorage = (key, defaultValue) => {
   }, [key]);
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [value, key]);
+    if (saveSettings || key === 'rememberSettings')
+      localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key, saveSettings]);
 
   return [value, setValue];
 };
