@@ -75,6 +75,8 @@ export default function Settings() {
   const [_streamKeyError, _setStreamKeyError] = useState();
   const [_ingestError, _setIngestError] = useState();
 
+  const [savingSettings, setSavingSettings] = useState(false);
+
   // This effect is called when the the stream key and
   // ingest server are changed
   useEffect(() => {
@@ -106,6 +108,7 @@ export default function Settings() {
   const handleLocalModalSave = async (e) => {
     // When the modal is saved, update values if they have
     // been changed.
+    setSavingSettings(true);
 
     // If a client update is required, complete the update first before
     // updating other settings
@@ -190,6 +193,7 @@ export default function Settings() {
     }
 
     toggleModal();
+    setSavingSettings(false);
   };
 
   return (
@@ -414,7 +418,12 @@ export default function Settings() {
         </div>
       </div>
       <footer className='flex w-full items-end gap-2 px-6 py-8 pt-0'>
-        <Button style='roundedText' fullWidth={true} onClick={toggleModal}>
+        <Button
+          style='roundedText'
+          fullWidth={true}
+          onClick={toggleModal}
+          disabled={savingSettings}
+        >
           Cancel
         </Button>
         <Button
@@ -422,6 +431,7 @@ export default function Settings() {
           style='roundedText'
           fullWidth={true}
           onClick={handleLocalModalSave}
+          loading={savingSettings}
         >
           Save
         </Button>
