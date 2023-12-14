@@ -356,17 +356,13 @@ const useBroadcastLayout = () => {
     });
 
     // Remove layers that are not in the updated scene
-    const layersToRemove = [];
-    oldSlotNames.forEach((currentSlot) => {
-      const { name, type } = currentSlot;
-      // Find updated slots with a name that is the same as a current slot
-      const commonSlotIndex = newSlotNames.find(
-        (newSlot) => newSlot.name === name
+    const layersToRemove = oldSlotNames.filter((oldSlot) => {
+      return (
+        newSlotNames.findIndex((newSlot) => newSlot.name === oldSlot.name) ===
+        -1
       );
-      if (commonSlotIndex === undefined) {
-        layersToRemove.push(currentSlot);
-      }
     });
+
     await removeAllLayers(layersToRemove);
   };
 

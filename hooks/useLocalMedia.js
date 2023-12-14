@@ -23,6 +23,7 @@ function useLocalMedia() {
   const localVideoDeviceIdRef = useRef();
   const localAudioDeviceIdRef = useRef();
   const localScreenShareRef = useRef();
+  const refreshSceneRef = useRef();
 
   const [permissions, setPermissions] = useState(false);
   const [audioDevices, setAudioDevices] = useState([]);
@@ -147,8 +148,26 @@ function useLocalMedia() {
       return formattedVideoDevices;
     });
 
-    if (newAudioDevice) await updateLocalAudio(newAudioDevice.value);
-    if (newVideoDevice) await updateLocalVideo(newVideoDevice.value);
+    var newAudioStream, newVideoStream;
+    if (newAudioDevice)
+      newAudioStream = await updateLocalAudio(
+        newAudioDevice.value,
+        formattedAudioDevices
+      );
+    if (newVideoDevice)
+      newVideoStream = await updateLocalVideo(
+        newVideoDevice.value,
+        formattedVideoDevices
+      );
+
+    if (refreshSceneRef.current) {
+      const newParams = {};
+      if (newAudioStream) newParams.micContent = newAudioStream;
+      if (newAudioDevice) newParams.micId = newAudioDevice.value;
+      if (newVideoStream) newParams.cameraContent = newVideoStream;
+      if (newVideoDevice) newParams.cameraId = newVideoDevice.value;
+      refreshSceneRef.current(newParams);
+    }
 
     setPermissions(permissions);
 
@@ -159,7 +178,7 @@ function useLocalMedia() {
     };
   };
 
-  const updateLocalAudio = async (deviceId) => {
+  const updateLocalAudio = async (deviceId, _audioDevices = audioDevices) => {
     try {
       localAudioStreamRef.current &&
         localAudioStreamRef.current.getTracks()[0].stop();
@@ -170,7 +189,9 @@ function useLocalMedia() {
     localAudioDeviceIdRef.current = deviceId;
     setSavedAudioDeviceId(deviceId);
 
-    const device = audioDevices.find((device) => device.value === deviceId);
+    const device = _audioDevices.find((device) => {
+      return device.value === deviceId;
+    });
     if (device) {
       toast.success(`Changed mic: ${device.label}`, {
         id: 'MIC_DEVICE_UPDATE',
@@ -181,7 +202,7 @@ function useLocalMedia() {
     return audioStream;
   };
 
-  const updateLocalVideo = async (deviceId) => {
+  const updateLocalVideo = async (deviceId, _videoDevices = videoDevices) => {
     try {
       localVideoStreamRef.current &&
         localVideoStreamRef.current.getTracks()[0].stop();
@@ -193,7 +214,7 @@ function useLocalMedia() {
     localVideoDeviceIdRef.current = deviceId;
     setSavedVideoDeviceId(deviceId);
 
-    const device = videoDevices.find((device) => device.value === deviceId);
+    const device = _videoDevices.find((device) => device.value === deviceId);
     if (device) {
       toast.success(`Changed camera: ${device.label}`, {
         id: 'CAM_DEVICE_UPDATE',
@@ -258,12 +279,11 @@ function useLocalMedia() {
     videoDevices,
     localAudioStreamRef,
     localVideoStreamRef,
-    localAudioDeviceIdRef,
-    localVideoDeviceIdRef,
     localAudioDeviceId: savedAudioDeviceId,
     localVideoDeviceId: savedVideoDeviceId,
     videoElemRef,
     canvasElemRef,
+    refreshSceneRef,
     localScreenShareStreamRef: localScreenShareRef,
     enableCanvasCamera,
     setEnableCanvasCamera,

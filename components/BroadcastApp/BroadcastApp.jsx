@@ -18,7 +18,9 @@ export default function BroadcastApp() {
 
   const { toggleModal, modalProps, modalActive, modalContent } =
     useContext(ModalContext);
-  const { showFullScreenCam } = useContext(BroadcastLayoutContext);
+  const { showFullScreenCam, refreshCurrentScene } = useContext(
+    BroadcastLayoutContext
+  );
   const {
     isSupported,
     broadcastClientRef,
@@ -35,6 +37,7 @@ export default function BroadcastApp() {
     canvasElemRef,
     cleanUpDevices,
     enableCanvasCamera,
+    refreshSceneRef,
   } = useContext(LocalMediaContext);
 
   const previewRef = useRef(undefined);
@@ -53,6 +56,7 @@ export default function BroadcastApp() {
             config: configRef.current,
           }).then((client) => {
             const { width, height } = videoStream.getTracks()[0].getSettings();
+            refreshSceneRef.current = refreshCurrentScene;
             showFullScreenCam({
               cameraStream: enableCanvasCamera
                 ? canvasElemRef.current
@@ -109,13 +113,14 @@ export default function BroadcastApp() {
     };
   }, [broadcastClientMounted]);
 
+  // React to webcam device changes if the canvas camera is enabled.
   useEffect(() => {
-    if (!broadcastClientMounted) return;
+    if (!broadcastClientMounted || !enableCanvasCamera) return;
     const { width, height } = broadcastClientRef.current.getCanvasDimensions();
     setCanvasWidth(width);
     setCanvasHeight(height);
     setVideoStream(localVideoStreamRef.current);
-  }, [localVideoDeviceId, broadcastClientMounted]);
+  }, [localVideoDeviceId, broadcastClientMounted, enableCanvasCamera]);
 
   useEffect(() => {
     if (!isSupported) {

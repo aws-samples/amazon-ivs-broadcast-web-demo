@@ -36,15 +36,12 @@ const useBroadcastMixer = () => {
 
   const removeOldDevices = async (oldDevices, newDevices) => {
     // Remove devices that are not in the updated mixer
-    const devicesToRemove = [];
-    oldDevices.forEach((oldDevice) => {
-      // Find updated devices with a name that is the same as a current device
-      const commonDeviceIndex = newDevices.find(
-        (newDevice) => newDevice.name === oldDevice.name
+    const devicesToRemove = oldDevices.filter((oldDevice) => {
+      return (
+        newDevices.findIndex(
+          (newDevice) => newDevice.deviceName === oldDevice.deviceName
+        ) === -1
       );
-      if (commonDeviceIndex === undefined) {
-        devicesToRemove.push(oldDevice);
-      }
     });
     await removeAllDevices(devicesToRemove);
   };
@@ -87,6 +84,7 @@ const useBroadcastMixer = () => {
   const removeMixerDevice = async (deviceName) => {
     try {
       await broadcastClientRef.current.removeAudioInputDevice(deviceName);
+      removeDeviceFromRef(deviceName);
     } catch (err) {
       if (
         err.code ===

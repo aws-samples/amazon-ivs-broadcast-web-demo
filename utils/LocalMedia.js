@@ -169,12 +169,12 @@ async function getCameraStream({
   return cameraStream;
 }
 
-async function getMicrophoneStream(deviceId) {
+async function getMicrophoneStream(deviceId = 'default') {
   let microphoneTrack = undefined;
   try {
     const media = await navigator.mediaDevices.getUserMedia({
       video: false,
-      audio: deviceId ? { exact: deviceId } : null,
+      audio: { deviceId: { exact: deviceId } },
     });
     microphoneTrack = media;
   } catch (err) {
