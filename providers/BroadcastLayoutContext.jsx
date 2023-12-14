@@ -1,5 +1,5 @@
 import useBroadcastLayout from '@/hooks/useBroadcastLayout';
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 
 const BroadcastLayoutContext = createContext({
   layersRef: undefined,
@@ -29,7 +29,20 @@ function BroadcastLayoutProvider({ children }) {
 
   return (
     <BroadcastLayoutContext.Provider
-      value={{
+      value={useMemo(() => {
+        return {
+          layersRef,
+          camActive,
+          setCamActive,
+          screenShareActive,
+          toggleScreenSharing,
+          toggleCamVisiblity,
+          showScreenShare,
+          showFullScreenCam,
+          refreshCurrentScene,
+          removeAllLayers,
+        };
+      }, [
         layersRef,
         camActive,
         setCamActive,
@@ -40,7 +53,7 @@ function BroadcastLayoutProvider({ children }) {
         showFullScreenCam,
         refreshCurrentScene,
         removeAllLayers,
-      }}
+      ])}
     >
       {children}
     </BroadcastLayoutContext.Provider>

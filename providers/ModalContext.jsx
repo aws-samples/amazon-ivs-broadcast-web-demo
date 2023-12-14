@@ -1,5 +1,5 @@
 import useModal from '@/hooks/useModal';
-import { createContext, useRef, useState } from 'react';
+import { createContext, useState, useMemo } from 'react';
 
 const ModalContext = createContext({
   modalActive: false,
@@ -14,14 +14,23 @@ function ModalProvider({ children }) {
 
   return (
     <ModalContext.Provider
-      value={{
+      value={useMemo(() => {
+        return {
+          modalActive,
+          toggleModal,
+          modalProps,
+          setModalProps,
+          modalContent,
+          setModalContent,
+        };
+      }, [
         modalActive,
         toggleModal,
         modalProps,
         setModalProps,
         modalContent,
         setModalContent,
-      }}
+      ])}
     >
       {children}
     </ModalContext.Provider>
