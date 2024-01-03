@@ -12,6 +12,7 @@ import { BroadcastLayoutContext } from '@/providers/BroadcastLayoutContext';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import CameraCanvas from '@/components/CameraCanvas/CameraCanvas';
 import toast from 'react-hot-toast';
+import Head from 'next/head';
 
 export default function BroadcastApp() {
   const searchParams = useSearchParams();
@@ -22,6 +23,7 @@ export default function BroadcastApp() {
     BroadcastLayoutContext
   );
   const {
+    isLive,
     isSupported,
     broadcastClientRef,
     createBroadcastClient,
@@ -132,7 +134,7 @@ export default function BroadcastApp() {
                 This browser is not fully supported. Certain features may not
                 work as expected.{' '}
                 <a
-                  href=''
+                  href='https://docs.aws.amazon.com/ivs/latest/LowLatencyUserGuide/broadcast.html#broadcast-platform-requirements'
                   target='_blank'
                   rel='noreferrer noopener'
                   className='text-primaryAlt dark-theme:text-primary hover:text-primary hover:dark-theme:text-primaryAlt hover:underline underline-offset-1'
@@ -151,8 +153,15 @@ export default function BroadcastApp() {
     }
   }, [isSupported]);
 
+  const title = `Amazon IVS – Web Broadcast Tool - ${
+    isLive ? 'LIVE' : 'Offline'
+  }`;
+
   return (
     <>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <div className='flex flex-col h-[100dvh] items-center bg-surface'>
         <ToasterBar />
         <StatusBar />

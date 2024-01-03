@@ -12,11 +12,7 @@ const BroadcastApp = dynamic(() => import('@/components/BroadcastApp'), {
 });
 
 export default function Broadcast() {
-  const isLive = false;
-  const title = `Amazon IVS – Web Broadcast Tool - ${
-    isLive ? 'LIVE' : 'Offline'
-  }`;
-
+  const title = `Amazon IVS – Web Broadcast Tool`;
   return (
     <>
       <Head>

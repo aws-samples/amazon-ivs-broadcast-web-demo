@@ -30,18 +30,3 @@ export default function Toggle({ label, defaultValue, onChange }) {
     </label>
   );
 }
-
-{
-  /* <div>
-  <label className={styles.checkboxLabel}>
-    <input
-      type='checkbox'
-      className={styles.input}
-      checked={checked}
-      onChange={handleChange}
-      {...inputProps}
-    />
-    {label}
-  </label>
-</div>; */
-}
