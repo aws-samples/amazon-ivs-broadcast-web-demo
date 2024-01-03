@@ -1,5 +1,5 @@
-import Modal from "./Modal.js";
-import useModal from "./useModal.js";
+import _ from './Modal.js';
+import useModal from '../../hooks/useModal.js';
 
-export default Modal;
+export default _;
 export { useModal };

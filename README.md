@@ -21,6 +21,25 @@ Follow these instructions to run the demo:
 1. Run: `yarn install`
 2. Run: `yarn run dev`
 
+## Customizing the demo
+
+To customize this demo, [fork it](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository) and modify the source code to suit your needs.
+
+### Change color theme
+
+To modify the colors used in the application UI, modify the colors defined in [tailwind.config.js](./tailwind.config.js).
+
+### Change layouts
+
+To modify the available layouts or add your own, modify the contents of [BroadcastLayoutTemplates.js](./utils/BroadcastLayoutTemplates.js). Math expressions within strings are supported and include the following variables:
+
+```
+CANVAS_WIDTH // the width of the canvas
+CANVAS_HEIGHT // the height of the canvas
+LAYER_WIDTH // the width of the current layer
+LAYER_HEIGHT // the height of the current layer
+```
+
 ## Known issues and limitations
 
 - The application is meant for demonstration purposes and **not** for production use.
