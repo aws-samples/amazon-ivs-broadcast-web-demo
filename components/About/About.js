@@ -79,7 +79,7 @@ export default function About({ version, handleModalClose }) {
             </a>
           </div>
           <p className='text-xs text-uiText/50'>
-            © 2022 Amazon Web Services, Inc. or its affiliates.
+            © 2024 Amazon Web Services, Inc. or its affiliates.
           </p>
           <p className='text-xs text-uiText/50'>All rights reserved.</p>
         </div>
