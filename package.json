@@ -11,7 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "amazon-ivs-web-broadcast": "^1.7.0",
+    "amazon-ivs-web-broadcast": "^1.8.0",
     "clsx": "^2.0.0",
     "core-js-pure": "3.34.0",
     "expr-eval": "^2.0.2",
