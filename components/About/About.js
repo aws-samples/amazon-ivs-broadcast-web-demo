@@ -60,6 +60,17 @@ export default function About({ version, handleModalClose }) {
           <p className='text-sm mb-3 text-uiText/50'>
             SDK Version: {`${version.split('-')[0]}`}
           </p>
+          <span className='text-sm mb-3 text-uiText/50'>
+            View source code on{' '}
+            <a
+              href='https://github.com/aws-samples/amazon-ivs-broadcast-web-demo'
+              target='_blank'
+              rel='noreferrer noopener'
+              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
+            >
+              Github↗
+            </a>
+          </span>
           <div className='flex justify-center gap-3 text-xs mb-1'>
             <a
               href='https://aws.amazon.com/terms/?nc1=f_pr'
