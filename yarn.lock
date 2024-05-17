@@ -311,10 +311,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-ivs-web-broadcast@^1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.11.0.tgz#c5dd55e99cee6a9e9f0edfcf232d4663c0db460f"
-  integrity sha512-ys5k5G5wRxhbwGHiKMayZht/n3PNF4/zlUyXcAskBN7XpKdPxCXWXHpd3dFgdN0XpCx2WJmkY1zNkqBKya+tUg==
+amazon-ivs-web-broadcast@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.12.0.tgz#b76e5732c4a68876874695ef4260a3e757f1aca4"
+  integrity sha512-hMu0i3hbr3Owy4OAvd2S6xScwgJ1uKX5+G8gdBWlc4iMTqgtn3egVCtTf1+hDNZVk9dpia73CqYXlYmYQxvloQ==
   dependencies:
     axios "^0.27.2"
     bowser "^2.11.0"
