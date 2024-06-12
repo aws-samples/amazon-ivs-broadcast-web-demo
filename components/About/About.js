@@ -66,33 +66,22 @@ export default function About({ version, handleModalClose }) {
               href='https://github.com/aws-samples/amazon-ivs-broadcast-web-demo'
               target='_blank'
               rel='noreferrer noopener'
-              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
+              className='text-uiText/50 hover:text-uiText underline underline-offset-1'
             >
-              Github↗
+              Github
             </a>
           </span>
-          <div className='flex justify-center gap-3 text-xs mb-1'>
-            <a
-              href='https://aws.amazon.com/terms/?nc1=f_pr'
-              target='_blank'
-              rel='noreferrer noopener'
-              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
-            >
-              Site Terms↗
-            </a>
-            <a
-              href='https://aws.amazon.com/privacy/'
-              target='_blank'
-              rel='noreferrer noopener'
-              className='text-uiText/50 hover:text-uiText hover:underline underline-offset-1'
-            >
-              Privacy Policy↗
-            </a>
-          </div>
           <p className='text-xs text-uiText/50'>
-            © 2024 Amazon Web Services, Inc. or its affiliates.
+            For more demos, visit{' '}
+            <a
+              href='https://ivs.rocks/examples/'
+              target='_blank'
+              rel='noreferrer noopener'
+              className='text-uiText/50 hover:text-uiText underline underline-offset-1'
+            >
+              ivs.rocks/examples
+            </a>
           </p>
-          <p className='text-xs text-uiText/50'>All rights reserved.</p>
         </div>
       </div>
       <footer className='flex flex-col w-full items-center justify-center gap-4 p-6 pt-0'>
