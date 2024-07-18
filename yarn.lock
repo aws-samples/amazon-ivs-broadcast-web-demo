@@ -407,18 +407,18 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-ivs-web-broadcast@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.13.0.tgz#32799dd4488851ecb093abff9a1a177f82537f55"
-  integrity sha512-wfyrggCn5uuvBN7a7vabK0DD5obi3J9ZTYLTRJjUPmdO6qc+JjIRyu5Iauph+9TfIYj0Pvl4dBtL2i1Z8FA0vw==
+amazon-ivs-web-broadcast@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.14.0.tgz#973f8bc4e6d3232ece22fb4395745209429486b5"
+  integrity sha512-qoTGGyjGv2Il1JuTuL3PfMpi0hqR49kbm3zRMCR6DkoOkvPNIZFNr7O28szE9UkXyZEnBiQqAaAJOE76mcrqkQ==
   dependencies:
-    axios "^0.27.2"
+    axios "0.27.2"
     bowser "^2.11.0"
     eventemitter3 "^4.0.7"
-    lodash "^4.5.0"
-    reflect-metadata "^0.1.13"
-    sdp-transform "^2.14.1"
-    webrtc-adapter "^8.1.1"
+    lodash "^4.17.21"
+    reflect-metadata "^0.2.2"
+    sdp-transform "^2.14.2"
+    webrtc-adapter "^8.2.3"
 
 ansi-regex@^5.0.1:
   version "5.0.1"
@@ -610,7 +610,7 @@ axe-core@=4.7.0:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.0.tgz#34ba5a48a8b564f67e103f0aa5768d76e15bbbbf"
   integrity sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==
 
-axios@^0.27.2:
+axios@0.27.2:
   version "0.27.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
@@ -1908,7 +1908,7 @@ lodash.mergewith@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
   integrity sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==
 
-lodash@^4.5.0:
+lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -2356,10 +2356,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-reflect-metadata@^0.1.13:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.14.tgz#24cf721fe60677146bb77eeb0e1f9dece3d65859"
-  integrity sha512-ZhYeb6nRaXCfhnndflDK8qI6ZQ/YcWZCISRAWICW9XYqMUwjZM9Z0DveWX/ABN01oxSHwVxKQmxeYZSsm0jh5A==
+reflect-metadata@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.2.tgz#400c845b6cba87a21f2c65c4aeb158f4fa4d9c5b"
+  integrity sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==
 
 reflect.getprototypeof@^1.0.4:
   version "1.0.6"
@@ -2455,7 +2455,7 @@ scheduler@^0.23.2:
   dependencies:
     loose-envify "^1.1.0"
 
-sdp-transform@^2.14.1:
+sdp-transform@^2.14.2:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/sdp-transform/-/sdp-transform-2.14.2.tgz#d2cee6a1f7abe44e6332ac6cbb94e8600f32d813"
   integrity sha512-icY6jVao7MfKCieyo1AyxFYm1baiM+fA00qW/KrNNVlkxHAd34riEKuEkUe4bBb3gJwLJZM+xT60Yj1QL8rHiA==
@@ -2876,7 +2876,7 @@ util-deprecate@^1.0.2:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
-webrtc-adapter@^8.1.1:
+webrtc-adapter@^8.2.3:
   version "8.2.3"
   resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-8.2.3.tgz#85e5e52ea68e808be8d6db85e338aa5c95e80022"
   integrity sha512-gnmRz++suzmvxtp3ehQts6s2JtAGPuDPjA1F3a9ckNpG1kYdYuHWYpazoAnL9FS5/B21tKlhkorbdCXat0+4xQ==
