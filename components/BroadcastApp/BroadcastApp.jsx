@@ -56,20 +56,26 @@ export default function BroadcastApp() {
         if (!broadcastClientRef.current) {
           createBroadcastClient({
             config: configRef.current,
-          }).then((client) => {
-            const { width, height } = videoStream.getTracks()[0].getSettings();
-            refreshSceneRef.current = refreshCurrentScene;
-            showFullScreenCam({
-              cameraStream: enableCanvasCamera
-                ? canvasElemRef.current
-                : videoStream,
-              cameraId: videoDeviceId,
-              cameraIsCanvas: enableCanvasCamera,
-              micStream: audioStream,
-              micId: audioDeviceId,
-              showMuteIcon: false,
+          })
+            .then((client) => {
+              const { width, height } = videoStream
+                .getTracks()[0]
+                .getSettings();
+              refreshSceneRef.current = refreshCurrentScene;
+              showFullScreenCam({
+                cameraStream: enableCanvasCamera
+                  ? canvasElemRef.current
+                  : videoStream,
+                cameraId: videoDeviceId,
+                cameraIsCanvas: enableCanvasCamera,
+                micStream: audioStream,
+                micId: audioDeviceId,
+                showMuteIcon: false,
+              });
+            })
+            .catch((err) => {
+              console.error(err);
             });
-          });
         }
       }
     );
