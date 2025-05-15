@@ -1,0 +1,127 @@
+name: Update amazon-ivs-web-broadcast Dependency
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # Run every day at 08:00
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-dependency:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+      
+      - name: Install dependencies
+        run: yarn install --immutable
+      
+      - name: Install npm-check-updates and jq
+        run: npm install -g npm-check-updates
+      
+      - name: Check for updates to amazon-ivs-web-broadcast
+        id: check-updates
+        run: |
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').dependencies['amazon-ivs-web-broadcast'].replace(/[\^~]/g, '')")
+          echo "current_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Current version: amazon-ivs-web-broadcast ${CURRENT_VERSION}"
+          
+          # Check for updates to amazon-ivs-web-broadcast
+          echo "Checking for updates to amazon-ivs-web-broadcast..."
+          if ! UPDATE_INFO=$(ncu "amazon-ivs-web-broadcast" --packageManager yarn --jsonUpgraded 2>/dev/null); then
+            echo "Error running npm-check-updates. Skipping update check."
+            echo "updates_available=false" >> "$GITHUB_OUTPUT"
+            echo "UPDATES_AVAILABLE=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          
+          # Check if the output is valid JSON and contains the package
+          if ! echo "${UPDATE_INFO}" | jq . >/dev/null 2>&1; then
+            echo "Invalid JSON output from npm-check-updates. Skipping update check."
+            echo "updates_available=false" >> "$GITHUB_OUTPUT"
+            echo "UPDATES_AVAILABLE=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          
+          # Check if there are updates available
+          if echo "${UPDATE_INFO}" | jq -e '."amazon-ivs-web-broadcast"' >/dev/null 2>&1; then
+            NEW_VERSION=$(echo "${UPDATE_INFO}" | jq -r '."amazon-ivs-web-broadcast"')
+            echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+            echo "updates_available=true" >> "$GITHUB_OUTPUT"
+            echo "Update available: amazon-ivs-web-broadcast -> ${NEW_VERSION}"
+            
+            # Also set as environment variables for backward compatibility
+            echo "CURRENT_VERSION=${CURRENT_VERSION}" >> "$GITHUB_ENV"
+            echo "NEW_VERSION=${NEW_VERSION}" >> "$GITHUB_ENV"
+            echo "UPDATES_AVAILABLE=true" >> "$GITHUB_ENV"
+          else
+            echo "No updates available for amazon-ivs-web-broadcast"
+            echo "updates_available=false" >> "$GITHUB_OUTPUT"
+            echo "UPDATES_AVAILABLE=false" >> "$GITHUB_ENV"
+          fi
+      
+      - name: Create branch and update dependency
+        if: steps.check-updates.outputs.updates_available == 'true'
+        id: create-branch
+        run: |
+          set -e
+          
+          # Create a new branch
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          BRANCH_NAME="dependency-update/amazon-ivs-web-broadcast-${{ steps.check-updates.outputs.new_version }}"
+          echo "Creating branch: ${BRANCH_NAME}"
+          git checkout -b "${BRANCH_NAME}"
+          
+          # Update the dependency using yarn
+          echo "Upgrading amazon-ivs-web-broadcast to latest version..."
+          if ! yarn upgrade amazon-ivs-web-broadcast --latest; then
+            echo "Failed to upgrade dependency. Exiting."
+            exit 1
+          fi
+          
+          # Check if there are changes to commit
+          if ! git diff --quiet package.json yarn.lock; then
+            # Commit changes
+            echo "Committing changes..."
+            git add package.json yarn.lock
+            git commit -m "chore: update amazon-ivs-web-broadcast to ${{ steps.check-updates.outputs.new_version }}"
+            
+            # Push changes
+            echo "Pushing changes to remote..."
+            git push origin "${BRANCH_NAME}"
+            
+            # Output branch name for PR creation
+            echo "branch_name=${BRANCH_NAME}" >> "$GITHUB_OUTPUT"
+            echo "branch_created=true" >> "$GITHUB_OUTPUT"
+            
+            # Also set as environment variable for backward compatibility
+            echo "BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_ENV"
+          else
+            echo "No changes detected in package.json or yarn.lock. Skipping commit and PR creation."
+            echo "branch_created=false" >> "$GITHUB_OUTPUT"
+            echo "UPDATES_AVAILABLE=false" >> "$GITHUB_ENV"
+          fi
+      
+      - name: Create Pull Request
+        if: steps.create-branch.outputs.branch_created == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: update amazon-ivs-web-broadcast to ${{ steps.check-updates.outputs.new_version }}'
+          title: 'chore: update amazon-ivs-web-broadcast to ${{ steps.check-updates.outputs.new_version }}'
+          body: |
+            This PR updates amazon-ivs-web-broadcast from ${{ steps.check-updates.outputs.current_version }} to ${{ steps.check-updates.outputs.new_version }}.
+
+            This update was automatically generated by the dependency update workflow.
+          branch: ${{ steps.create-branch.outputs.branch_name }}
+          delete-branch: true
