@@ -552,10 +552,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-ivs-web-broadcast@^1.25.1:
-  version "1.25.1"
-  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.25.1.tgz#c8a6d2df0d730289797c2467484e14c9d4763d5c"
-  integrity sha512-iAazu7AaRllV3y5ZHNuV0VvQocpeMnx1pgi+QFzxe4oxbCq62JGzp0t6Szd0pOuZSpxY8Rl2NTTARfXTrICceA==
+amazon-ivs-web-broadcast@^1.27.0:
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.27.0.tgz#378d12c0c922e00bb40893c95a1b4e154de39707"
+  integrity sha512-Tmmb5XtHA2n00GDqBWsdYYl64YeJwbnHWqboMknIIhTAllAebg78mviV/TCLGtF0jOvZgjsyFOWBkK6pKDhS8A==
   dependencies:
     axios "0.27.2"
     bowser "^2.11.0"
