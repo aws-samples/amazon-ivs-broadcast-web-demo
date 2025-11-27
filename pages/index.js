@@ -1,17 +1,8 @@
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
-import LocalMediaProvider from '@/providers/LocalMediaContext';
-import BroadcastProvider from '@/providers/BroadcastContext';
-import UserSettingsProvider from '@/providers/UserSettingsContext';
-import ModalProvider from '@/providers/ModalContext';
-import BroadcastLayoutProvider from '@/providers/BroadcastLayoutContext';
-import BroadcastMixerProvider from '@/providers/BroadcastMixerContext';
+import Link from 'next/link';
+import Button from '@/components/Button';
 
-const BroadcastApp = dynamic(() => import('@/components/BroadcastApp'), {
-  ssr: false,
-});
-
-export default function Broadcast() {
+export default function Home() {
   const title = `Amazon IVS – Web Broadcast Tool`;
   return (
     <>
@@ -23,19 +14,19 @@ export default function Broadcast() {
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <ModalProvider>
-        <UserSettingsProvider>
-          <LocalMediaProvider>
-            <BroadcastProvider>
-              <BroadcastMixerProvider>
-                <BroadcastLayoutProvider>
-                  <BroadcastApp />
-                </BroadcastLayoutProvider>
-              </BroadcastMixerProvider>
-            </BroadcastProvider>
-          </LocalMediaProvider>
-        </UserSettingsProvider>
-      </ModalProvider>
+      <div className='flex flex-col items-center justify-center h-screen bg-surface gap-4'>
+        <h1 className='text-3xl font-bold mb-8 text-uiText'>
+          Amazon IVS Broadcast Demo
+        </h1>
+        <div className='flex gap-4'>
+          <Link href='/broadcast'>
+            <Button>Broadcast</Button>
+          </Link>
+          <Link href='/stream'>
+            <Button type='secondary'>Stream</Button>
+          </Link>
+        </div>
+      </div>
     </>
   );
 }
