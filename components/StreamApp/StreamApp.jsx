@@ -1,10 +1,19 @@
 import React from 'react';
+import Player from '@/components/Player';
+
+// TODO: Add your Playback URL
+const PLAYBACK_URL =
+    '';
 
 export default function StreamApp() {
     return (
         <div className='flex flex-col items-center justify-center h-screen bg-surface text-uiText'>
-            <h1 className='text-3xl font-bold mb-4'>Stream App</h1>
-            <p>This is a placeholder for the streaming functionality.</p>
+            <div className='w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden shadow-lg'>
+                <Player playbackUrl={PLAYBACK_URL} />
+            </div>
+            <p className='mt-4 text-sm text-gray-500'>
+                Playing from: {PLAYBACK_URL}
+            </p>
         </div>
     );
 }

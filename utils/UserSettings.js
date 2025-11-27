@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 import { isMobileOnly } from 'react-device-detect';
 
 const DEFAULT_RESOLUTION = 720;
-const DEFAULT_INGEST = '';
+const DEFAULT_INGEST = ''; // TODO: Add ingest endpoint
+const DEFAULT_STREAM_KEY = ''; // TODO: Add stream key
 const CHANNEL_TYPES = {
   BASIC: 'BASIC',
   STANDARD: 'STANDARD',
@@ -59,7 +60,7 @@ export function getSavedValuesFromLocalStorage() {
   );
   const [streamKey, setStreamKey] = useLocalStorage(
     'sk',
-    undefined,
+    DEFAULT_STREAM_KEY,
     saveSettings
   );
   const [ingestEndpoint, setIngestEndpoint] = useLocalStorage(
