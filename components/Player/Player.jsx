@@ -17,6 +17,12 @@ export default function Player({ playbackUrl }) {
                 return;
             }
 
+            // Clean up existing player first
+            if (playerRef.current) {
+                playerRef.current.delete();
+                playerRef.current = null;
+            }
+
             const player = create();
             playerRef.current = player;
             player.attachHTMLVideoElement(videoRef.current);
@@ -35,12 +41,16 @@ export default function Player({ playbackUrl }) {
             });
 
             if (playbackUrl) {
+                console.log('Loading playback URL:', playbackUrl);
                 player.load(playbackUrl);
                 player.play();
             }
 
             return () => {
-                player.delete();
+                if (playerRef.current) {
+                    playerRef.current.delete();
+                    playerRef.current = null;
+                }
             };
         }
     }, [playbackUrl, scriptLoaded]);

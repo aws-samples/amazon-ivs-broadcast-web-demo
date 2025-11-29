@@ -1,15 +1,7 @@
 import { IvsClient, CreateChannelCommand } from "@aws-sdk/client-ivs";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
-
-// Hardcoded credentials for demo purposes
-const awsConfig = {
-    region: "us-east-1",
-    credentials: {
-        accessKeyId: "", // TODO: replace with your user's access key id
-        secretAccessKey: "" // TODO: replace with your user's secret access key
-    }
-};
+import { awsConfig } from "./aws-config";
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
