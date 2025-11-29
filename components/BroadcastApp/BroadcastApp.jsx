@@ -47,6 +47,34 @@ export default function BroadcastApp() {
   const [canvasWidth, setCanvasWidth] = useState();
   const [canvasHeight, setCanvasHeight] = useState();
   const [videoStream, setVideoStream] = useState();
+  const [broadcastName, setBroadcastName] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateChannel = async () => {
+    if (!broadcastName) return;
+    setIsCreating(true);
+    const toastId = toast.loading('Creating Channel...');
+    try {
+      const res = await fetch('/api/createChannel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ broadcastName }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIngestEndpoint(data.ingestEndpoint);
+        setStreamKey(data.streamKey);
+        toast.success(`Channel "${data.channelName}" created!`, { id: toastId });
+      } else {
+        toast.error('Failed to create channel: ' + data.message, { id: toastId });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error creating channel', { id: toastId });
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   useEffect(() => {
     if (sdkIsStarting.current) return;
@@ -159,9 +187,8 @@ export default function BroadcastApp() {
     }
   }, [isSupported]);
 
-  const title = `Amazon IVS – Web Broadcast Tool - ${
-    isLive ? 'LIVE' : 'Offline'
-  }`;
+  const title = `Amazon IVS – Web Broadcast Tool - ${isLive ? 'LIVE' : 'Offline'
+    }`;
 
   return (
     <>
@@ -169,6 +196,22 @@ export default function BroadcastApp() {
         <title>{title}</title>
       </Head>
       <div className='flex flex-col h-[100dvh] items-center bg-surface'>
+        <div className="w-full p-4 bg-surface flex gap-2 justify-center items-center z-10 border-b border-gray-700">
+          <input
+            type="text"
+            placeholder="Enter Broadcast Name"
+            className="p-2 rounded text-black w-64"
+            value={broadcastName}
+            onChange={(e) => setBroadcastName(e.target.value)}
+          />
+          <button
+            onClick={handleCreateChannel}
+            disabled={isCreating || !broadcastName}
+            className="bg-primary text-white px-4 py-2 rounded disabled:opacity-50 font-bold hover:bg-primaryAlt transition-colors"
+          >
+            {isCreating ? 'Creating...' : 'Create Channel'}
+          </button>
+        </div>
         <ToasterBar />
         <StatusBar />
         <StreamPreview previewRef={previewRef} />
