@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.940.0",
+    "@aws-sdk/client-ivs": "^3.940.0",
+    "@aws-sdk/lib-dynamodb": "^3.940.0",
     "@headlessui/react": "^2.0.4",
     "@heroicons/react": "^2.1.3",
     "amazon-ivs-player": "^1.47.0",
