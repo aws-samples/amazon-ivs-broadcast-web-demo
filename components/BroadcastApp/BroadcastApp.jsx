@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import ToasterBar from '@/components/ToasterBar';
 import StatusBar from '@/components/StatusBar';
 import StreamPreview from '@/components/StreamPreview';
@@ -11,11 +12,15 @@ import { UserSettingsContext } from '@/providers/UserSettingsContext';
 import { BroadcastLayoutContext } from '@/providers/BroadcastLayoutContext';
 import { LocalMediaContext } from '@/providers/LocalMediaContext';
 import CameraCanvas from '@/components/CameraCanvas/CameraCanvas';
+import { useAuth } from '@/providers/AuthContext';
+import Button from '@/components/Button';
 import toast from 'react-hot-toast';
 import Head from 'next/head';
 
 export default function BroadcastApp() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { logout, user } = useAuth();
 
   const { toggleModal, modalProps, modalActive, modalContent } =
     useContext(ModalContext);
@@ -196,21 +201,35 @@ export default function BroadcastApp() {
         <title>{title}</title>
       </Head>
       <div className='flex flex-col h-[100dvh] items-center bg-surface'>
-        <div className="w-full p-4 bg-surface flex gap-2 justify-center items-center z-10 border-b border-gray-700">
-          <input
-            type="text"
-            placeholder="Enter Broadcast Name"
-            className="p-2 rounded text-black w-64"
-            value={broadcastName}
-            onChange={(e) => setBroadcastName(e.target.value)}
-          />
-          <button
-            onClick={handleCreateChannel}
-            disabled={isCreating || !broadcastName}
-            className="bg-primary text-white px-4 py-2 rounded disabled:opacity-50 font-bold hover:bg-primaryAlt transition-colors"
-          >
-            {isCreating ? 'Creating...' : 'Create Channel'}
-          </button>
+        <div className="w-full p-4 bg-surface flex gap-2 justify-between items-center z-10 border-b border-gray-700">
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              placeholder="Enter Broadcast Name"
+              className="p-2 rounded text-black w-64"
+              value={broadcastName}
+              onChange={(e) => setBroadcastName(e.target.value)}
+            />
+            <button
+              onClick={handleCreateChannel}
+              disabled={isCreating || !broadcastName}
+              className="bg-primary text-white px-4 py-2 rounded disabled:opacity-50 font-bold hover:bg-primaryAlt transition-colors"
+            >
+              {isCreating ? 'Creating...' : 'Create Channel'}
+            </button>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-nyu-neutral-600">Welcome, {user?.username}</span>
+            <Button 
+              type="secondary" 
+              onClick={async () => {
+                await logout();
+                router.push('/');
+              }}
+            >
+              Sign Out
+            </Button>
+          </div>
         </div>
         <ToasterBar />
         <StatusBar />

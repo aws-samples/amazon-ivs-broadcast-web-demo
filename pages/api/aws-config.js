@@ -4,7 +4,7 @@
 export const awsConfig = {
     region: "us-east-1",
     credentials: {
-        accessKeyId: "", // TODO: Add your AWS Access Key ID
-        secretAccessKey: "" // TODO: Add your AWS Secret Access Key
+        accessKeyId: "AKIAYKR4ZKNLHUTB5UEC", // TODO: Add your AWS Access Key ID
+        secretAccessKey: "GrQ6muCmPMUvnISkVm7K2IRFJPt94uRwQ6cTxrSJ" // TODO: Add your AWS Secret Access Key
     }
 };

@@ -6,7 +6,9 @@
       "@/hooks/*": ["hooks/*"],
       "@/providers/*": ["providers/*"],
       "@/utils/*": ["utils/*"],
-      "@/workers/*": ["workers/*"]
+      "@/workers/*": ["workers/*"],
+      "@/lib/*": ["lib/*"],
+      "@/pages/*": ["pages/*"]
     }
   }
 }

@@ -75,11 +75,9 @@ export default function Input({
           </div>
         )}
       </div>
-      {error ? (
-        <span className='text-xs inline-block mt-2 text-destruct/75'>{`${error}`}</span>
-      ) : (
-        <span className='text-xs inline-block mt-2 text-uiText/50'>{`${hint}`}</span>
+      {error && (
+        <span className="text-xs inline-block mt-2 text-destruct/75">{error}</span>
       )}
-    </div>
+      </div>
   );
 }
