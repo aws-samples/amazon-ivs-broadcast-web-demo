@@ -793,10 +793,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-ivs-web-broadcast@^1.32.0:
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.32.0.tgz#73c88998df8d3bf1c864552f1ab04efdde60df1f"
-  integrity sha512-ajE7S50WJfkwYzlGsy4fiZ25rNHlNs+5XB1BwB6EJD6fdyDXItbaA2GUfvE/bM4TcVexw6O7xr0GeGlStKpFkg==
+amazon-ivs-web-broadcast@^1.33.0:
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/amazon-ivs-web-broadcast/-/amazon-ivs-web-broadcast-1.33.0.tgz#e4da1373dc56fff0f2c2dafb6efdc242fbe7de60"
+  integrity sha512-tz4Par0Lp3o/mgnHQ1YsEv69r+JrUYqq4urI25HmB7VeEUZYUq48uX3fnuMn/Y9pQ8/PislcM7ekaSGYVT8SNw==
   dependencies:
     bowser "^2.11.0"
     eventemitter3 "^4.0.7"
